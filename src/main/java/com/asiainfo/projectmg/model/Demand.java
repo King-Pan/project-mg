@@ -1,24 +1,28 @@
-package com.asiainfo.projectmg.excel.model;
+package com.asiainfo.projectmg.model;
 
 import com.asiainfo.projectmg.excel.ExcelColumn;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import javax.persistence.*;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @author king-pan
  * Date: 2018/9/4
- * Time: 上午11:54
+ * Time: 下午5:58
  * Description: 需求信息
  */
 @Data
+@Table
+@Entity
 public class Demand {
     /**
      * 需求编码
      */
     @ExcelColumn("需求编码")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String code;
     /**
      * 需求名称

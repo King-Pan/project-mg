@@ -52,7 +52,7 @@
         <append>true</append>
         <!-- 日志文件的格式 -->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
             <charset>utf-8</charset>
         </encoder>
         <!-- 此日志文件只记录info级别的 -->
@@ -159,8 +159,6 @@
             <appender-ref ref="FILEWARN"/>
             <appender-ref ref="FILEINFO"/>
             <appender-ref ref="FILEERROR"/>
-            <!--<appender-ref ref="DBAPPENDER"/>-->
-            <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
 

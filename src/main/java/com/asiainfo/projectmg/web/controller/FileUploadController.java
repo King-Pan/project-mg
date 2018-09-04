@@ -1,6 +1,6 @@
 package com.asiainfo.projectmg.web.controller;
 
-import com.asiainfo.projectmg.excel.model.Demand;
+import com.asiainfo.projectmg.model.Demand;
 import com.asiainfo.projectmg.util.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

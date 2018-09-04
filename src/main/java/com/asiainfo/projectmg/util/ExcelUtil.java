@@ -1,7 +1,7 @@
 package com.asiainfo.projectmg.util;
 
 import com.asiainfo.projectmg.excel.ExcelColumn;
-import com.asiainfo.projectmg.excel.model.Demand;
+import com.asiainfo.projectmg.model.Demand;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.poi.ss.usermodel.*;
