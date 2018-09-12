@@ -16,4 +16,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface ExcelColumn {
     public String value() default "";
+    public String format() default "";
 }

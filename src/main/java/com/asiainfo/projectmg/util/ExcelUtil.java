@@ -1,14 +1,16 @@
 package com.asiainfo.projectmg.util;
 
 import com.asiainfo.projectmg.excel.ExcelColumn;
-import com.asiainfo.projectmg.model.Demand;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -23,6 +25,7 @@ import java.util.regex.Pattern;
  * Time: 下午3:26
  * Description: No Description
  */
+@Slf4j
 public class ExcelUtil {
 
     private static FormulaEvaluator evaluator;
@@ -69,6 +72,7 @@ public class ExcelUtil {
         if (Objects.equals(XLS, extension) || Objects.equals(XLSX, extension)) {
             return readExcel(file.getInputStream());
         } else {
+            log.error("不支持的文件类型-->{}", extension);
             throw new IOException("不支持的文件类型");
         }
     }
@@ -86,6 +90,7 @@ public class ExcelUtil {
         if (Objects.equals(XLS, extension) || Objects.equals(XLSX, extension)) {
             return readExcel(file.getInputStream(), cls);
         } else {
+            log.error("不支持的文件类型-->{}", extension);
             throw new IOException("不支持的文件类型");
         }
     }
@@ -128,7 +133,7 @@ public class ExcelUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } finally {
             IOUtils.closeQuietly(workbook);
             IOUtils.closeQuietly(inputStream);
@@ -175,8 +180,8 @@ public class ExcelUtil {
                         reflectionMap.put(j, classMap.get(cellValue));
                     }
                 }
-                Row row = null;
-                Cell cell = null;
+                Row row;
+                Cell cell;
                 for (int i = sheet.getFirstRowNum() + 1; i < sheet.getPhysicalNumberOfRows(); i++) {
                     row = sheet.getRow(i);
                     T t = cls.newInstance();
@@ -187,9 +192,19 @@ public class ExcelUtil {
                             List<Field> fieldList = reflectionMap.get(j);
                             for (Field field : fieldList) {
                                 try {
-                                    field.set(t, cellValue);
+                                    System.out.println(field.getName() + "=========" + field.getType());
+                                    ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
+                                    if (annotation != null && org.apache.commons.lang3.StringUtils.isNoneBlank(annotation.format())) {
+                                        System.out.println(cellValue);
+
+                                        //yyyy/MM/dd
+
+                                    } else {
+                                        field.set(t, cellValue);
+                                    }
+
                                 } catch (Exception e) {
-                                    //logger.error()
+                                    log.error(e.getMessage(), e);
                                 }
                             }
                         }
@@ -199,6 +214,7 @@ public class ExcelUtil {
             }
         } catch (Exception e) {
             dataList = null;
+            log.error(e.getMessage(), e);
         } finally {
             IOUtils.closeQuietly(workbook);
             IOUtils.closeQuietly(inputStream);
@@ -214,8 +230,6 @@ public class ExcelUtil {
      */
     private static Object getCellValue(Cell cell) {
         Object value = null;
-
-        System.out.println(cell.getCellStyle());
         switch (cell.getCellTypeEnum()) {
             case _NONE:
                 break;
@@ -266,7 +280,6 @@ public class ExcelUtil {
             default:
                 value = cell.toString();
         }
-        System.out.println(value);
         return value;
     }
 
@@ -274,34 +287,17 @@ public class ExcelUtil {
         String cellValue = null;
         switch (cell.getCellType()) {
             case Cell.CELL_TYPE_STRING:
-                System.out.print("String :");
                 cellValue = cell.getStringValue();
                 break;
-
             case Cell.CELL_TYPE_NUMERIC:
-                System.out.print("NUMERIC:");
                 cellValue = String.valueOf(cell.getNumberValue());
                 break;
             case Cell.CELL_TYPE_FORMULA:
-                System.out.print("FORMULA:");
                 break;
             default:
                 break;
         }
 
         return cellValue;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            List<Demand> list = readExcel(new FileInputStream(new File("/Users/king-pan/Desktop/model.xlsx")), Demand.class);
-            for (Demand d : list) {
-                System.out.println(d);
-            }
-            System.out.println(list.size());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }

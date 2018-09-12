@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="../static/api/bootstrap/bootstrap.min.css" th:href="@{/api/bootstrap/bootstrap.min.css}"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../static/api/bootstrap-table/bootstrap-table.css"
+          th:href="@{/api/bootstrap-table/bootstrap-table.css}">
+    <link rel="stylesheet" href="../static/api/bootstrapValidator/css/bootstrapValidator.min.css"
+          th:href="@{/api/bootstrapValidator/css/bootstrapValidator.min.css}">
+    <link rel="stylesheet" th:href="@{/api/bootstrap/plugins/upload/css/fileinput.min.css}"
+          href="../static/api/bootstrap/plugins/upload/css/fileinput.min.css">
+    <link rel="stylesheet" th:href="@{/css/commons.css}" href="../static/css/commons.css">
+
+    <link rel="stylesheet" href="../static/api/layui/css/layui.css" th:href="@{/api/layui/css/layui.css}">
+    <link rel="stylesheet" href="../static/api/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+          th:href="@{/api/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}">
+
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">需求管理系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/demand/}">需求管理</a></li>
+                    <li class="active"><a th:href="@{/card/}">打卡管理</a></li>
+                    <li><a href="#">员工管理</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+                    <li><a href="../navbar-static-top/">Static top</a></li>
+                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">打卡记录管理</div>
+        <div class="panel-body">
+            <div class="panel" style="margin-bottom:0px; border: solid 1px #eee;">
+                <div class="panel-heading"
+                     style="font-weight: bold; background-color: #f5fafe; border-bottom: solid 1px #eee;">查询条件
+                    <span style="float:right;">
+	            	<p class="qry-btn" style="text-decoration: none;">
+						<span class="glyphicon glyphicon-search"></span>查询
+	            	</p>
+				</span>
+                </div>
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin:12px 0 0 0;">
+                    <span class="control-label col-sm-2" style="width: 10%;">
+						员工姓名
+					</span>
+                        <div class="col-sm-4" style="margin-bottom:12px; width: 18%">
+                            <input type="text" class="form-control" id="search_userId">
+                        </div>
+                        <span class="control-label col-sm-2" style="width: 10%;">
+						打卡日期
+					    </span>
+                        <div class="col-sm-4" style="margin-bottom:12px; width: 18%;">
+                            <div class="input-append date form_datetime " id="search_date">
+                                <input type="text" class="form-control" value="" readonly>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="toolbar" class="btn-group" style="margin-top: 15px;margin-bottom: 15px;">
+                <button id="btnAdd" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>添加需求
+                </button>
+                <button id="btnAllot" type="button" class="btn btn-default" onclick="deleteUser()">
+                    <span class="glyphicon glyphicon-cog"></span>分配工时
+                </button>
+                <button id="btn_add" type="button" class="btn btn-default" onclick="infoModal()">
+                    <span class="glyphicon glyphicon-plus"></span>修改需求
+                </button>
+                <button type="button" class="btn btn-default" id="importCardInfo">
+                    <span class="glyphicon glyphicon-upload"></span>导入打卡记录
+                </button>
+                <button id="btn_export" type="button" class="btn btn-default" onclick="exportUserList()">
+                    <span class="glyphicon glyphicon-export	"></span>导出需求
+                </button>
+            </div>
+            <table id="cardInfoTable"></table>
+        </div>
+    </div>
+</div> <!-- /container -->
+
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog"
+     aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="importModalLabel">打卡记录导入</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="downLoadExcel" class="col-md-2 control-label">模板下载</label>
+                        <div class="col-md-10">
+                            <a th:href="@{/demand/downloadExcelTemplate}" id="downLoadExcel">打卡记录模板</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;"></div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="file-loading">
+                                <input id="cardInfoExcelFile" name="fileName" type="file"
+                                       data-msg-placeholder="请选择文件" data-allowed-file-extensions='["xls", "xlsx"]'
+                                       style="height: 25px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加需求</h4>
+            </div>
+            <div class="modal-body" style="width: 95%">
+                <form class="form-horizontal" id="infoForm" method="POST" role="form">
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户编号：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <input placeholder="" name="userId" id="userId" value="" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户中文名：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <input placeholder="" name="userName" id="userName" value="" class="form-control"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">地市：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <select id="areaId" name="areaId" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">区县：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <select id="cityId" name="cityId" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">状态：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <select name="statusVal" id="statusVal" class="form-control" style="width: 100%;">
+                                <option value="0">关闭</option>
+                                <option value="1">启用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">电话：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <input placeholder="" name="phoneNum" id="phoneNum" value="" class="form-control"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <!-- Text input-->
+                        <label class="col-sm-4 col-xs-7 control-label" for="input01">邮箱：</label>
+                        <div class="col-xs-8 col-sm-7">
+                            <input placeholder="" name="email" id="email" value="" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label class="col-sm-4 col-xs-7 control-label"></label>
+                        <!-- Button -->
+                        <div class="col-xs-8 col-sm-7">
+                            <input type="button" class="btn btn-info btn-sm" id="btn_sub1" onclick="infoSave()"
+                                   value="提交"/> <input type="reset" class="btn btn-info btn-sm" data-dismiss="modal"
+                                                       value="关闭"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!--分配工时-->
+<div class="modal fade" id="allotModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">分配工时</h4>
+            </div>
+            <div class="modal-body" style="width: 95%">
+                <div class="row">
+                    <h2>分配工时</h2>
+                </div>
+                <div class="row">
+                    <h2>已分配工时</h2>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<script th:src="@{/api/jquery/jquery-2.1.1.min.js}" src="../static/api/jquery/jquery-2.1.1.min.js"></script>
+<script th:src="@{/api/bootstrap/bootstrap.min.js}" src="../static/api/bootstrap/bootstrap.min.js"></script>
+<script th:src="@{/api/bootstrap-table/bootstrap-table.js}"
+        src="../static/api/bootstrap-table/bootstrap-table.js"></script>
+<script th:src="@{/api/bootstrap-table/locale/bootstrap-table-zh-CN.js}"
+        src="../static/api/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+<script th:src="@{/api/bootstrapValidator/js/bootstrapValidator.min.js}"
+        src="../static/api/bootstrapValidator/js/bootstrapValidator.min.js"></script>
+<script th:src="@{/api/bootstrapValidator/js/language/zh_CN.js}"
+        src="../static/api/bootstrapValidator/js/language/zh_CN.js"></script>
+<script th:src="@{/api/bootstrap/plugins/upload/js/fileinput.min.js}"
+        src="../static/api/bootstrap/plugins/upload/js/fileinput.min.js"></script>
+<script src="../static/api/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/api/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+
+<script src="../static/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+        th:src="@{/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script th:src="@{/api/layui/layui.all.js}"
+        src="../static/api/layui/layui.all.js"></script>
+<script src="../static/js/demand/demand.js" th:src="@{/js/card/card.js}"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ spring:
       false
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/mg
+    url: jdbc:mysql://localhost:3306/mg?verifyServerCertificate=false&useSSL=false
     username: root
     password: 123456
     initialize: true
@@ -32,6 +32,15 @@ spring:
     filters: stat,wall,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    hikari:
+      auto-commit: false
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: select 1
     # 合并多个DruidDataSource的监控数据
     #useGlobalDataSourceStat: true
   jpa:
@@ -51,10 +60,8 @@ shiro:
   password:
     hash-iterations: 10 #默认加密次数,在密码匹配和注册两个地方使用
     algorithm-name: sha-1 #加密算法
-logging:
-  level:
-    org.apache.shiro: debug
-    club.javalearn: debug
 server:
   port: 8888
+  servlet:
+    context-path: /api
 uploadPath: /Users/king-pan/excels

@@ -164,7 +164,7 @@
 
 
     <springProfile name="dev">
-        <root level="DEBUG">
+        <root level="info">
             <!--<appender-ref ref="FILEERROR"/>-->
             <!--<appender-ref ref="FILEWARN"/>-->
             <!--<appender-ref ref="FILEINFO"/>-->

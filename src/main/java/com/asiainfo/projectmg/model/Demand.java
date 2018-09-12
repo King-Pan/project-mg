@@ -4,6 +4,7 @@ import com.asiainfo.projectmg.excel.ExcelColumn;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,15 +15,17 @@ import javax.persistence.*;
  * Description: 需求信息
  */
 @Data
-@Table
+@Table(name = "demand")
 @Entity
 public class Demand {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     /**
      * 需求编码
      */
     @ExcelColumn("需求编码")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String code;
     /**
      * 需求名称
@@ -32,12 +35,12 @@ public class Demand {
     /**
      * 预估工作量-天（天/人）
      */
-    @ExcelColumn("预估工作量-天")
+    @ExcelColumn("预估工作量(天)")
     private String personDay;
     /**
      * 预估工作量（小时）
      */
-    @ExcelColumn("预估工作量-时")
+    @ExcelColumn("预估工作量(时)")
     private String preHours;
 
     /**
@@ -57,4 +60,15 @@ public class Demand {
      */
     @ExcelColumn("可报工人员")
     private String persons;
+
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }

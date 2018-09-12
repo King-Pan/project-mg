@@ -1,0 +1,272 @@
+html,body,ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "MicrosoftYaHei", "Microsoft YaHei";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+}
+
+li {
+    list-style: none;
+    height: 20px;
+    line-height: 20px;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #999999;
+}
+
+textarea {
+    resize: none;
+}
+
+.fl {
+    float: left;
+}
+
+.mar-b15 {
+    margin-bottom: 15px;
+}
+
+.mar-t15 {
+    margin-top: 15px;
+}
+
+.wrap {
+    padding: 10px;
+}
+
+.inp-lab {
+    width: 24%;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    text-align: right;
+}
+
+.qry-btn {
+    padding: 5px 8px;
+    margin-bottom: 3px;
+    border: 1px solid #46b8da;
+    border-radius: 3px;
+    color: #46b8da;
+}
+
+.qry-btn:HOVER {
+    color: #fff;
+    background-color: #5bc0de;
+}
+
+.bootstrap-table table>thead>tr>th {
+    border-bottom: 1px solid #DDDDDD;
+    background-color: #f5fafe;
+}
+
+.bootstrap-table table td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 250px;
+}
+
+.qry-line {
+    height: 40px;
+    line-height: 40px;
+}
+
+.datagrid-row-selected {
+    background: #ffe48d;
+    color: #000;
+}
+
+.oper {
+    text-decoration: underline;
+    color: blue;
+}
+
+.staff-form {
+    padding: 10px;
+}
+
+.staff-lab {
+    width: 27%;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    text-align: left;
+}
+
+.staff-oneitem {
+    float: left;
+    width: 33.3%;
+    margin: 8px 0;
+}
+
+.split-line {
+    height: 2px;
+    border: none;
+    border-top: 2px solid #ccc;
+}
+
+.conf-table {
+    width: 85%;
+    text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.conf-title {
+    background-color: #f5fafe;
+    border: 1px solid #eee;
+    width: 20%;
+}
+
+.conf-cont {
+    border: 1px solid #eee;
+    padding: 7px;
+}
+
+.data-table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 4px;
+}
+
+.data-table thead td {
+    background-color: #f5fafe;
+    height: 35px;
+    line-height: 35px;
+}
+
+.data-table thead td:HOVER {
+    cursor: pointer;
+}
+
+.data-table thead td:HOVER {
+    color: #0088CC;
+}
+
+.data-table td {
+    border: 1px solid #eee;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 5px;
+    font-family: "MicrosoftYaHei", "Microsoft YaHei";
+    font-size: 12px;
+}
+
+.data-table tbody td {
+    white-space: nowrap;
+    min-width: 48px;
+}
+
+.data-table tbody tr:nth-child(2n){
+    background-color: #f9f9f9;
+}
+
+.no-data {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #eee;
+    color: red;
+}
+
+.rpt-tip-arror {
+    position: absolute;
+    top: 10px;
+    right: 200px;
+    line-height: 32px;
+    height: 32px;
+    padding: 0 5px;
+    background-color: #ffb752 !important;
+    color: #fff;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+}
+
+.rpt-tip-arror:HOVER {
+    background-color: #fe9e19 !important;
+}
+
+.rpt-time-tip {
+    width: 200px;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    background: #fff;
+    box-shadow: 2px 2px 3px #eee;
+}
+
+.rpt-time-tip-title {
+    height: 32px;
+    line-height: 32px;
+    background: #ffb34b;
+    padding: 0 5px;
+    color: #fff;
+    border: 1px solid #FFCC99;
+}
+
+.rpt-time-tip-content {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 5px;
+    border: 1px solid #FFCC99;
+}
+
+.err-img {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.trace {
+    color: #FF9900;
+    width: 80px;
+    font-size: 14px;
+    padding: 3px 0;
+}
+
+.trace:hover {
+    cursor: pointer;
+    color: #188EEE;
+}
+
+.error {
+    color: #FF9900;
+    width: 80px;
+    font-size: 14px;
+    padding: 3px 0;
+}
+
+.err-info {
+    color: #7D7B7C;
+    font-family: "å¾®è½¯é›…é»‘";
+    font-size: 14px;
+}
+
+.error:hover {
+    cursor: pointer;
+    color: #188EEE;
+}
+
+.panel-desc {
+    font-size: 12px;
+    font-family: "å¾®è½¯é›…é»‘";
+    height: 42px;
+    line-height: 42px;
+    border-bottom: solid 1px #eee;
+    padding: 0 8px;
+    background: #f5fafe;
+}
