@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -192,19 +191,21 @@ public class ExcelUtil {
                             List<Field> fieldList = reflectionMap.get(j);
                             for (Field field : fieldList) {
                                 try {
-                                    System.out.println(field.getName() + "=========" + field.getType());
-                                    ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
-                                    if (annotation != null && org.apache.commons.lang3.StringUtils.isNoneBlank(annotation.format())) {
+                                    if(field.getName().equals("date") && field.getType().equals(Date.class)){
                                         System.out.println(cellValue);
+                                    }else{
+                                        field.set(t, cellValue);
+                                    }
+                                    System.out.println(field.getName()+"========="+field.getType());
+                                    ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
+                                    if(annotation!=null && annotation.format()!=null){
 
-                                        //yyyy/MM/dd
-
-                                    } else {
+                                    }else{
                                         field.set(t, cellValue);
                                     }
 
                                 } catch (Exception e) {
-                                    log.error(e.getMessage(), e);
+                                    log.error(e.getMessage(),e);
                                 }
                             }
                         }
