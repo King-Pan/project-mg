@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +43,7 @@ public class ExcelUtil {
 
 //	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd"); // 格式化日期字符串
 
-    private static final FastDateFormat FAST_DATE_FORMAT = FastDateFormat.getInstance("yyyy/MM/dd");
+    private static final FastDateFormat FAST_DATE_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd");
 
     /**
      * 格式化科学计数器
@@ -191,21 +192,9 @@ public class ExcelUtil {
                             List<Field> fieldList = reflectionMap.get(j);
                             for (Field field : fieldList) {
                                 try {
-                                    if(field.getName().equals("date") && field.getType().equals(Date.class)){
-                                        System.out.println(cellValue);
-                                    }else{
-                                        field.set(t, cellValue);
-                                    }
-                                    System.out.println(field.getName()+"========="+field.getType());
-                                    ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
-                                    if(annotation!=null && annotation.format()!=null){
-
-                                    }else{
-                                        field.set(t, cellValue);
-                                    }
-
+                                    field.set(t, cellValue);
                                 } catch (Exception e) {
-                                    log.error(e.getMessage(),e);
+                                    log.error(e.getMessage(), e);
                                 }
                             }
                         }
@@ -240,8 +229,9 @@ public class ExcelUtil {
             case NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
                     //日期
-                    //统一转成 yyyy/MM/dd
+                    //统一转成 yyyy-MM-dd
                     value = FAST_DATE_FORMAT.format(DateUtil.getJavaDate(cell.getNumericCellValue()));
+                    value = com.asiainfo.projectmg.util.DateUtil.getDateFromFormat(value.toString(), "yyyy-MM-dd");
                 } else if ("@".equals(cell.getCellStyle().getDataFormatString())
                         || "General".equals(cell.getCellStyle().getDataFormatString())
                         || "0_ ".equals(cell.getCellStyle().getDataFormatString())) {

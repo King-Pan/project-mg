@@ -2,6 +2,7 @@ package com.asiainfo.projectmg.service;
 
 import com.asiainfo.projectmg.common.Message;
 import com.asiainfo.projectmg.model.Demand;
+import com.asiainfo.projectmg.model.form.AllotForm;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -53,4 +54,11 @@ public interface DemandService {
      * @return
      */
     Message<Demand> getList(Demand demand, Pageable pageable);
+
+
+    /**
+     * 按照需求分配工时
+     * @param allotForm 参数
+     */
+    void allotHours(AllotForm allotForm);
 }

@@ -49,11 +49,14 @@ public class CardServiceImpl implements CardService {
                 CardInfo card = cardRepository.getByUserNameAndDate(cardInfo.getUserName(), cardInfo.getDate());
                 if (card != null) {
                     log.info("更新打卡记录");
+                    cardInfo.setCreateTime(card.getCreateTime());
                     cardInfo.setUpdateTime(new Date());
                     cardInfo.setUserId(card.getUserId());
                     cardInfo.setId(card.getId());
+                    cardInfo.setSurHours(card.getSurHours());
                 } else {
                     cardInfo.setCreateTime(new Date());
+                    cardInfo.setSurHours(cardInfo.getHours());
                 }
                 save(cardInfo);
             }
@@ -99,6 +102,6 @@ public class CardServiceImpl implements CardService {
         message.setRows(cardInfoPage.getContent());
         message.setTotal(cardInfoPage.getTotalElements());
         message.setStart(cardInfoPage.getNumberOfElements());
-        return null;
+        return message;
     }
 }

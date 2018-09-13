@@ -2,6 +2,7 @@ package com.asiainfo.projectmg.web.controller;
 
 import com.asiainfo.projectmg.common.ServerResponse;
 import com.asiainfo.projectmg.model.Demand;
+import com.asiainfo.projectmg.model.form.AllotForm;
 import com.asiainfo.projectmg.service.DemandService;
 import com.asiainfo.projectmg.util.DownloadTemplateUtil;
 import com.asiainfo.projectmg.util.ExcelUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,5 +81,15 @@ public class DemandController {
     public void downloadExcelTemplate(final HttpServletResponse response) {
         String path = "excel" + File.separator + "demand.xlsx";
         DownloadTemplateUtil.downloadTeplate(response, path);
+    }
+
+
+    @RequestMapping("/allotHours")
+    public ServerResponse allotHours(AllotForm allotForm, @RequestParam("ids[]") Long[] ids) {
+        allotForm.setCardIds(Arrays.asList(ids));
+        System.out.println(allotForm);
+        System.out.println(Arrays.toString(ids));
+        ServerResponse serverResponse = ServerResponse.createBySuccessMessage("分配成功");
+        return serverResponse;
     }
 }

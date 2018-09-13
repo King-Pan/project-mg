@@ -17,7 +17,8 @@
     <link rel="stylesheet" th:href="@{/api/bootstrap/plugins/upload/css/fileinput.min.css}"
           href="../static/api/bootstrap/plugins/upload/css/fileinput.min.css">
     <link rel="stylesheet" th:href="@{/css/commons.css}" href="../static/css/commons.css">
-
+    <link rel="stylesheet" href="../static/api/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+          th:href="@{/api/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}">
     <link rel="stylesheet" href="../static/api/layui/css/layui.css" th:href="@{/api/layui/css/layui.css}">
 
     <style>
@@ -106,17 +107,17 @@
                 <button id="btnAdd" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus"></span>添加需求
                 </button>
-                <button id="btnAllot" type="button" class="btn btn-default" onclick="deleteUser()">
+                <button id="btnAllot" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-cog"></span>分配工时
                 </button>
-                <button id="btn_add" type="button" class="btn btn-default" onclick="infoModal()">
+                <button id="btn_add" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus"></span>修改需求
                 </button>
                 <button type="button" class="btn btn-default" id="importDemand">
                     <span class="glyphicon glyphicon-upload"></span>导入需求
                 </button>
 
-                <button id="btn_export" type="button" class="btn btn-default" onclick="exportUserList()">
+                <button id="btn_export" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-export	"></span>导出需求
                 </button>
             </div>
@@ -255,11 +256,41 @@
                 <h4 class="modal-title" id="myModalLabel">分配工时</h4>
             </div>
             <div class="modal-body" style="width: 95%">
-                <div class="row">
-                    <h2>分配工时</h2>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">
+                        员工姓名
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control"/>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        打卡日期
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control"/>
+                    </div>
                 </div>
-                <div class="row">
-                    <h2>已分配工时</h2>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">
+                        分配方式
+                    </label>
+                    <div class="col-sm-4">
+                        <input name="type" checked type="radio" value="0">定额分配
+                        <input name="type" type="radio" value="1">余量分配
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="hour" type="number" class="form-control"/>
+                    </div>
+                </div>
+                <div>
+                    <table id="cardInfoTable">
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-info btn-sm" id="btnAllotHours"
+                           value="分配工时"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -280,6 +311,11 @@
         src="../static/api/bootstrapValidator/js/language/zh_CN.js"></script>
 <script th:src="@{/api/bootstrap/plugins/upload/js/fileinput.min.js}"
         src="../static/api/bootstrap/plugins/upload/js/fileinput.min.js"></script>
+<script src="../static/api/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/api/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+
+<script src="../static/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+        th:src="@{/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 <script th:src="@{/api/layui/layui.all.js}"
         src="../static/api/layui/layui.all.js"></script>
 <script src="../static/js/demand/demand.js" th:src="@{/js/demand/demand.js}"></script>

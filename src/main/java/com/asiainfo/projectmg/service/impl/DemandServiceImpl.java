@@ -3,6 +3,7 @@ package com.asiainfo.projectmg.service.impl;
 import com.asiainfo.projectmg.common.BootstrapMessage;
 import com.asiainfo.projectmg.common.Message;
 import com.asiainfo.projectmg.model.Demand;
+import com.asiainfo.projectmg.model.form.AllotForm;
 import com.asiainfo.projectmg.repository.DemandRepository;
 import com.asiainfo.projectmg.service.DemandService;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +80,14 @@ public class DemandServiceImpl implements DemandService {
     }
 
     @Override
+    public void allotHours(AllotForm allotForm) {
+        if(allotForm.getType().equals("0")){
+            //定额分配
+
+        }
+    }
+
+    @Override
     public void saveList(List<Demand> demandList) {
 
         if (CollectionUtils.isNotEmpty(demandList)) {
@@ -87,6 +96,7 @@ public class DemandServiceImpl implements DemandService {
                 if (d != null) {
                     log.info("更新需求");
                     demand.setUpdateTime(new Date());
+                    demand.setCreateTime(d.getCreateTime());
                     demand.setId(d.getId());
                 } else {
                     demand.setCreateTime(new Date());
