@@ -19,7 +19,7 @@ function initEvent() {
         $("#importModal").modal('show');
         $("#cardInfoExcelFile").fileinput({
             language: 'zh_CN', //设置语言
-            uploadUrl:  "fileUpload", //上传的地址
+            uploadUrl: "fileUpload", //上传的地址
             allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
             uploadAsync: true, //默认异步上传
             showUpload: true, //是否显示上传按钮
@@ -102,7 +102,8 @@ function initTable() {
             }
             , {
                 field: 'userId',
-                title: '员工ID'
+                title: '员工ID',
+                visible: false
             }
             , {
                 field: 'userName',
@@ -110,7 +111,8 @@ function initTable() {
             }
             , {
                 field: 'date',
-                title: '打卡日期'
+                title: '打卡日期',
+                formatter: formatterUtils.getDayTime
             }, {
                 field: 'hours',
                 title: '打卡工时(时)'
@@ -119,14 +121,17 @@ function initTable() {
                 title: '剩报未报工时'
             }, {
                 field: 'createTime',
-                title: '创建时间'
+                title: '创建时间',
+                formatter: formatterUtils.getFullTime
             }, {
                 field: 'updateTime',
-                title: '更新时间'
+                title: '更新时间',
+                formatter: formatterUtils.getFullTime
             }
         ]
     });
 }
+
 function queryParams() {
-    
+
 }

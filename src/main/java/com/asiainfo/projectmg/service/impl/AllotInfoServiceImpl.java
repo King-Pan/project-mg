@@ -2,9 +2,9 @@ package com.asiainfo.projectmg.service.impl;
 
 import com.asiainfo.projectmg.common.BootstrapMessage;
 import com.asiainfo.projectmg.common.Message;
-import com.asiainfo.projectmg.model.CardInfo;
-import com.asiainfo.projectmg.repository.CardRepository;
-import com.asiainfo.projectmg.service.CardService;
+import com.asiainfo.projectmg.model.AllotInfo;
+import com.asiainfo.projectmg.repository.AllotInfoRepository;
+import com.asiainfo.projectmg.service.AllotInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,69 +25,60 @@ import java.util.List;
  * Created with IntelliJ IDEA.
  *
  * @author king-pan
- * Date: 2018/9/12
- * Time: 下午2:37
+ * Date: 2018/9/14
+ * Time: 上午9:37
  * Description: No Description
  */
 @Slf4j
 @Service
-public class CardServiceImpl implements CardService {
-
+public class AllotInfoServiceImpl implements AllotInfoService {
 
     @Autowired
-    private CardRepository cardRepository;
+    private AllotInfoRepository allotInfoRepository;
 
     @Override
-    public void save(CardInfo card) {
-        cardRepository.save(card);
+    public void save(AllotInfo allotInfo) {
+        allotInfoRepository.save(allotInfo);
     }
 
     @Override
-    public void saveList(List<CardInfo> cardList) {
-        if (CollectionUtils.isNotEmpty(cardList)) {
-            for (CardInfo cardInfo : cardList) {
-                CardInfo card = cardRepository.getByUserNameAndDate(cardInfo.getUserName(), cardInfo.getDate());
-                if (card != null) {
-                    log.info("更新打卡记录");
-                    cardInfo.setCreateTime(card.getCreateTime());
-                    cardInfo.setUpdateTime(new Date());
-                    cardInfo.setUserId(card.getUserId());
-                    cardInfo.setId(card.getId());
-                    cardInfo.setSurHours(card.getSurHours());
-                } else {
-                    cardInfo.setCreateTime(new Date());
-                    cardInfo.setSurHours(cardInfo.getHours());
-                }
-                save(cardInfo);
+    public void saveList(List<AllotInfo> allotInfoList) {
+        if (CollectionUtils.isNotEmpty(allotInfoList)) {
+            for (AllotInfo allotInfo : allotInfoList) {
+                save(allotInfo);
             }
         }
     }
 
     @Override
     public void delete(Long id) {
-        cardRepository.deleteById(id);
+        allotInfoRepository.deleteById(id);
     }
 
     @Override
-    public Message<CardInfo> getList(final CardInfo card, Pageable pageable) {
-        BootstrapMessage<CardInfo> message = new BootstrapMessage<>();
+    public Message<AllotInfo> getList(final AllotInfo allotInfo, Pageable pageable) {
+        BootstrapMessage<AllotInfo> message = new BootstrapMessage<>();
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "userId"));
         orders.add(new Sort.Order(Sort.Direction.ASC, "updateTime"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(orders));
-        Page<CardInfo> cardInfoPage = cardRepository.findAll(new Specification<CardInfo>() {
+        Page<AllotInfo> cardInfoPage = allotInfoRepository.findAll(new Specification<AllotInfo>() {
             @Override
-            public Predicate toPredicate(Root<CardInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            public Predicate toPredicate(Root<AllotInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Path<String> userName = root.get("userName");
+                Path<String> demandName = root.get("demandName");
                 Path<Date> date = root.get("date");
 
                 List<Predicate> wherePredicate = new ArrayList<>();
-                if (card != null) {
-                    if (StringUtils.isNoneBlank(card.getUserName())) {
-                        wherePredicate.add(cb.like(userName, "%" + card.getUserName() + "%"));
+                if (allotInfo != null) {
+                    if (StringUtils.isNoneBlank(allotInfo.getUserName())) {
+                        wherePredicate.add(cb.like(userName, "%" + allotInfo.getUserName() + "%"));
                     }
-                    if (card.getDate() != null) {
-                        wherePredicate.add(cb.equal(date, card.getDate()));
+                    if (allotInfo.getDemandName() != null) {
+                        wherePredicate.add(cb.like(demandName, "%" + allotInfo.getDemandName() + "%"));
+                    }
+                    if (allotInfo.getDate() != null) {
+                        wherePredicate.add(cb.equal(date, allotInfo.getDate()));
                     }
                 }
                 Predicate[] predicates = new Predicate[]{};

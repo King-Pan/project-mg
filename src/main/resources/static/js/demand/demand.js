@@ -166,6 +166,7 @@ function initTable() {
                 layer.alert("查询数据失败，错误信息：<br>" + data.msg, {icon: 5, title: '提示'});
                 return;
             }
+            $('[data-toggle="tooltip"]').tooltip();
         },
         columns: [{
             align: 'center',
@@ -182,7 +183,8 @@ function initTable() {
             }
             , {
                 field: 'name',
-                title: '需求名称'
+                title: '需求名称',
+                formatter: formatterUtils.title
             }
             , {
                 field: 'personDay',
@@ -201,10 +203,12 @@ function initTable() {
                 title: '可报工人员'
             }, {
                 field: 'createTime',
-                title: '创建时间'
+                title: '创建时间',
+                formatter: formatterUtils.getFullTime
             }, {
                 field: 'updateTime',
-                title: '更新时间'
+                title: '更新时间',
+                formatter: formatterUtils.getFullTime
             }
         ]
     });
