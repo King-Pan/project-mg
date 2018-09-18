@@ -77,7 +77,7 @@ public class DemandController {
     @RequestMapping("/downloadExcelTemplate")
     public void downloadExcelTemplate(final HttpServletResponse response) {
         String path = "excel" + File.separator + "demand.xlsx";
-        DownloadTemplateUtil.downloadTeplate(response, path);
+        DownloadTemplateUtil.downloadTeplate(response, path, "demand_info_");
     }
 
 

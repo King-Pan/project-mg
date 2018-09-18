@@ -17,9 +17,9 @@ import java.io.OutputStream;
  */
 public class DownloadTemplateUtil {
 
-    public static synchronized void downloadTeplate(final HttpServletResponse response,String path){
+    public static synchronized void downloadTeplate(final HttpServletResponse response,String path,String name){
         try {
-            String fileName = "OnLineBankInfo_" + System.currentTimeMillis() + ".xlsx";
+            String fileName = name + System.currentTimeMillis() + ".xlsx";
             InputStream inputStream = DemandController.class.getClassLoader().getResourceAsStream(path);
             response.reset();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");

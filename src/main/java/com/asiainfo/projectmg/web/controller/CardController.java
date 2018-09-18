@@ -78,7 +78,7 @@ public class CardController {
     @RequestMapping("/downloadExcelTemplate")
     public void downloadExcelTemplate(final HttpServletResponse response) {
         String path = "excel" + File.separator + "card.xlsx";
-        DownloadTemplateUtil.downloadTeplate(response, path);
+        DownloadTemplateUtil.downloadTeplate(response, path,"card_info_");
     }
 
 }

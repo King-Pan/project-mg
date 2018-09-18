@@ -42,6 +42,7 @@ function initEvent() {
             if (status == 200) {
                 layer.msg("导入成功");
                 $("#importModal").modal('hide');
+                $("#demandTable").bootstrapTable('refresh');
             } else {
                 layer.msg("导入失败");
             }

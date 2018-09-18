@@ -172,6 +172,25 @@ public class DemandServiceImpl implements DemandService {
                 } else {
                     demand.setCreateTime(new Date());
                 }
+                if (StringUtils.isBlank(demand.getCode())) {
+                    throw new RuntimeException("【需求编码】不能为空");
+                }
+                if (StringUtils.isBlank(demand.getName())) {
+                    throw new RuntimeException("【需求名称】不能为空");
+                }
+                if (StringUtils.isBlank(demand.getPersonDay())) {
+                    throw new RuntimeException("【预估工作量(天)】不能为空");
+                }
+                if(StringUtils.isBlank(demand.getPreHours())){
+                    throw new RuntimeException("【预估工作量(时)】不能为空");
+                }
+                if(StringUtils.isBlank(demand.getPreHours())){
+                    throw new RuntimeException("【已报工工时】不能为空");
+                }
+                if(StringUtils.isBlank(demand.getPreHours())){
+                    throw new RuntimeException("【剩报工工时】不能为空");
+                }
+
                 save(demand);
             }
         }
