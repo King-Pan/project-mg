@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,7 +41,7 @@ public class CardController {
         return new ModelAndView("card");
     }
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public Object list(CardInfo cardInfo, @PageableDefault Pageable pageable) {
         return cardService.getList(cardInfo, pageable);
     }

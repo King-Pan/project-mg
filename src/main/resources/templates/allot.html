@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>打卡记录管理</title>
+    <title>工时分配记录</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +35,7 @@
 </head>
 <body>
 <div class="container">
+    <a th:href="@{/}" style="display: none" id="baseUrlA"></a>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -50,8 +51,8 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a th:href="@{/demand/}">需求管理</a></li>
-                    <li class="active"><a th:href="@{/card/}">打卡管理</a></li>
-                    <li><a th:href="@{/allot/}">分配工时管理</a></li>
+                    <li><a th:href="@{/card/}">打卡管理</a></li>
+                    <li class="active"><a th:href="@{/allot/}">分配工时管理</a></li>
                     <!--<li class="dropdown">-->
                         <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
                            <!--aria-expanded="false">Dropdown <span class="caret"></span></a>-->
@@ -82,7 +83,7 @@
                 <div class="panel-heading"
                      style="font-weight: bold; background-color: #f5fafe; border-bottom: solid 1px #eee;">查询条件
                     <span style="float:right;">
-	            	<p class="qry-btn" style="text-decoration: none;"  onclick="queryCard()">
+	            	<p class="qry-btn" style="text-decoration: none;" onclick="doQuery()">
 						<span class="glyphicon glyphicon-search"></span>查询
 	            	</p>
 				</span>
@@ -96,42 +97,43 @@
                             <input type="text" class="form-control" id="search_userName">
                         </div>
                         <span class="control-label col-sm-2" style="width: 10%;">
-                            打卡日期
+                            开始日期
                         </span>
                         <div class="col-sm-4" style="margin-bottom:12px; width: 18%;">
                             <div class="input-append date form_datetime ">
-                                <input type="text" class="form-control" id="search_date" readonly>
+                                <input type="text" class="form-control" id="search_start_date" readonly>
+                                <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </div>
                         </div>
                         <span class="control-label col-sm-2" style="width: 10%;">
-                            分配完成
+                            结束日期
                         </span>
                         <div class="col-sm-4" style="margin-bottom:12px; width: 18%;">
-                            已完成<input type="radio" value="0" name="surHours">
-                            未完成<input type="radio" value="1" name="surHours">
+                            <div class="input-append date form_datetime ">
+                                <input type="text" class="form-control" id="search_end_date" readonly>
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group" style="margin:12px 0 0 0;">
+                         <span class="control-label col-sm-2" style="width: 10%;">
+                            需求名称
+                        </span>
+                        <div class="col-sm-4" style="margin-bottom:12px; width: 18%;">
+                            <input type="text" class="form-control" id="search_name">
                         </div>
                     </div>
                 </form>
             </div>
             <div id="toolbar" class="btn-group" style="margin-top: 15px;margin-bottom: 15px;">
-                <button id="btnAdd" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span>添加需求
-                </button>
-                <button id="btnAllot" type="button" class="btn btn-default" onclick="deleteUser()">
-                    <span class="glyphicon glyphicon-cog"></span>分配工时
-                </button>
-                <button id="btn_add" type="button" class="btn btn-default" onclick="infoModal()">
-                    <span class="glyphicon glyphicon-plus"></span>修改需求
-                </button>
-                <button type="button" class="btn btn-default" id="importCardInfo">
-                    <span class="glyphicon glyphicon-upload"></span>导入打卡记录
-                </button>
-                <button id="btn_export" type="button" class="btn btn-default" onclick="exportUserList()">
-                    <span class="glyphicon glyphicon-export	"></span>导出需求
+                <button id="btn_export" type="button" class="btn btn-default" onclick="download()">
+                    <span class="glyphicon glyphicon-export"></span>导出需求
                 </button>
             </div>
-            <table id="cardInfoTable"></table>
+            <table id="allotInfoTable"></table>
         </div>
     </div>
 </div> <!-- /container -->
@@ -174,111 +176,6 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加需求</h4>
-            </div>
-            <div class="modal-body" style="width: 95%">
-                <form class="form-horizontal" id="infoForm" method="POST" role="form">
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户编号：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="userId" id="userId" value="" class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户中文名：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="userName" id="userName" value="" class="form-control"
-                                   type="text">
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">地市：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <select id="areaId" name="areaId" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">区县：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <select id="cityId" name="cityId" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">状态：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <select name="statusVal" id="statusVal" class="form-control" style="width: 100%;">
-                                <option value="0">关闭</option>
-                                <option value="1">启用</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">电话：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="phoneNum" id="phoneNum" value="" class="form-control"
-                                   type="text">
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">邮箱：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="email" id="email" value="" class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <label class="col-sm-4 col-xs-7 control-label"></label>
-                        <!-- Button -->
-                        <div class="col-xs-8 col-sm-7">
-                            <input type="button" class="btn btn-info btn-sm" id="btn_sub1" onclick="infoSave()"
-                                   value="提交"/> <input type="reset" class="btn btn-info btn-sm" data-dismiss="modal"
-                                                       value="关闭"/>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
-</div>
-
-<!--分配工时-->
-<div class="modal fade" id="allotModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">分配工时</h4>
-            </div>
-            <div class="modal-body" style="width: 95%">
-                <div class="row">
-                    <h2>分配工时</h2>
-                </div>
-                <div class="row">
-                    <h2>已分配工时</h2>
-                </div>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
-</div>
-
 <script th:src="@{/api/jquery/jquery-2.1.1.min.js}" src="../static/api/jquery/jquery-2.1.1.min.js"></script>
 <script th:src="@{/api/bootstrap/bootstrap.min.js}" src="../static/api/bootstrap/bootstrap.min.js"></script>
 <script th:src="@{/api/bootstrap-table/bootstrap-table.js}"
@@ -298,7 +195,7 @@
         th:src="@{/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 <script th:src="@{/api/layui/layui.all.js}"
         src="../static/api/layui/layui.all.js"></script>
-<script src="../static/js/demand/demand.js" th:src="@{/js/card/card.js}"></script>
+<script src="../static/js/allot/allot.js" th:src="@{/js/allot/allot.js}"></script>
 <script src="../static/js/commons.js" th:src="@{/js/commons.js}"></script>
 </body>
 </html>

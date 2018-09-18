@@ -69,6 +69,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public List<CardInfo> getListByCardIds(List<Long> cardIds) {
+        return cardRepository.findByIdIn(cardIds);
+    }
+
+    @Override
     public Message<CardInfo> getList(final CardInfo card, Pageable pageable) {
         BootstrapMessage<CardInfo> message = new BootstrapMessage<>();
         List<Sort.Order> orders = new ArrayList<>();
@@ -80,6 +85,7 @@ public class CardServiceImpl implements CardService {
             public Predicate toPredicate(Root<CardInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Path<String> userName = root.get("userName");
                 Path<Date> date = root.get("date");
+                Path<String> surHours = root.get("surHours");
 
                 List<Predicate> wherePredicate = new ArrayList<>();
                 if (card != null) {
@@ -89,6 +95,13 @@ public class CardServiceImpl implements CardService {
                     if (card.getDate() != null) {
                         wherePredicate.add(cb.equal(date, card.getDate()));
                     }
+                    if (card.getSurHours() != null && card.getSurHours().equals("0")) {
+                        wherePredicate.add(cb.equal(surHours, "0"));
+                    }
+                    if (card.getSurHours() != null && card.getSurHours().equals("1")) {
+                        wherePredicate.add(cb.greaterThan(surHours, "0"));
+                    }
+
                 }
                 Predicate[] predicates = new Predicate[]{};
                 //这里可以设置任意条查询条件

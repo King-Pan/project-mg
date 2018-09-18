@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>需求管理</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,25 +50,25 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a th:href="@{/demand/}">需求管理</a></li>
                     <li><a th:href="@{/card/}">打卡管理</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <li><a th:href="@{/allot/}">分配工时管理</a></li>
+                    <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+                           <!--aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="#">Action</a></li>-->
+                            <!--<li><a href="#">Another action</a></li>-->
+                            <!--<li><a href="#">Something else here</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li class="dropdown-header">Nav header</li>-->
+                            <!--<li><a href="#">Separated link</a></li>-->
+                            <!--<li><a href="#">One more separated link</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                    <li><a href="../navbar-static-top/">Static top</a></li>
-                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                    <!--<li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>-->
+                    <!--<li><a href="../navbar-static-top/">Static top</a></li>-->
+                    <!--<li><a href="../navbar-fixed-top/">Fixed top</a></li>-->
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -92,13 +92,13 @@
 						需求编码
 					</span>
                         <div class="col-sm-4" style="margin-bottom:12px; width: 18%">
-                            <input type="text" class="form-control" id="search_userId">
+                            <input type="text" class="form-control" id="search_code">
                         </div>
                         <span class="control-label col-sm-2" style="width: 10%;">
 						需求名称
 					    </span>
                         <div class="col-sm-4" style="margin-bottom:12px; width: 18%;">
-                            <input type="text" class="form-control" id="search_userName">
+                            <input type="text" class="form-control" id="search_name">
                         </div>
                     </div>
                 </form>
@@ -261,13 +261,16 @@
                         员工姓名
                     </label>
                     <div class="col-sm-4">
-                        <input class="form-control"/>
+                        <input id="search_userName" class="form-control"/>
                     </div>
                     <label class="col-sm-2 control-label">
                         打卡日期
                     </label>
                     <div class="col-sm-4">
-                        <input class="form-control"/>
+                        <div class="input-append date form_datetime ">
+                            <input type="text" class="form-control" id="search_date" readonly>
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -280,6 +283,11 @@
                     </div>
                     <div class="col-sm-3">
                         <input id="hour" type="number" class="form-control"/>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button></button>
+                        <button type="button" class="btn btn-default" onclick="queryCardInfo()">查询</button>
                     </div>
                 </div>
                 <div>

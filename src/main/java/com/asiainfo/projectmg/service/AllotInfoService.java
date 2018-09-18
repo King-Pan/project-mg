@@ -40,9 +40,18 @@ public interface AllotInfoService {
     /**
      * 分页获取需求列表
      *
-     * @param allotInfo     查询参数
-     * @param pageable 分页参数
+     * @param allotInfo 查询参数
+     * @param pageable  分页参数
      * @return
      */
     Message<AllotInfo> getList(AllotInfo allotInfo, Pageable pageable);
+
+
+    /**
+     * 获取所有分配记录列表
+     *
+     * @param allotInfo 查询参数
+     * @return
+     */
+    List<AllotInfo> getList(AllotInfo allotInfo);
 }

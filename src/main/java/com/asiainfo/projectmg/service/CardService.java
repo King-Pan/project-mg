@@ -30,6 +30,14 @@ public interface CardService {
     void saveList(List<CardInfo> cardList);
 
     /**
+     * 通过cardId 查询CardInfo集合
+     *
+     * @param cardIds
+     * @return
+     */
+    List<CardInfo> getListByCardIds(List<Long> cardIds);
+
+    /**
      * 通过ID删除需求
      *
      * @param id

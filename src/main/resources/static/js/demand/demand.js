@@ -2,7 +2,18 @@
 $(function () {
     initTable();
     initEvent();
+    $("#search_date").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: 2,
+        language: 'zh-CN',
+        autoclose: true,
+        todayBtn: 1,
+        todayHighlight: 1,
+        clearBtn: true
+    });
 });
+
+var cardInfoTable;
 
 /**
  * 初始化绑定事件
@@ -52,6 +63,8 @@ function initEvent() {
 
     //分配工时确定按钮
     $("#btnAllotHours").click(function () {
+
+
         //1. 验证值是否填写正确
 
         var records = $("#cardInfoTable").bootstrapTable('getSelections');
@@ -119,7 +132,11 @@ function initEvent() {
             data: obj,
             url: 'allotHours',
             success: function (data) {
-                console.log(data);
+                layer.msg(data.msg);
+                if (data.status === 200) {
+                    $("#demandTable").bootstrapTable('refresh');
+                    $("#cardInfoTable").bootstrapTable('refresh');
+                }
             },
             error: function () {
 
@@ -131,7 +148,7 @@ function initEvent() {
 function initTable() {
     $('#demandTable').bootstrapTable({
         url: 'list',         //请求后台的URL（*）
-        method: 'post',                     //请求方式（*）
+        method: 'get',                     //请求方式（*）
         toolbar: '#toolbar',                //工具按钮用哪个容器
         striped: true,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -214,21 +231,44 @@ function initTable() {
     });
 }
 
-function queryParams() {
+function queryParams(params) {
+    var param = {
+        code: $("#search_code").val() || '',
+        name: $("#search_name").val() || '',
+        rows: params.limit,
+        page: params.offset / params.limit
+    };
+    return param;
+}
 
+function doQuery() {
+    $("#demandTable").bootstrapTable('refresh');
 }
 
 function initCardInfoTable() {
-    $('#cardInfoTable').bootstrapTable({
+    if (cardInfoTable) {
+        cardInfoTable.bootstrapTable('refresh');
+        return;
+    }
+    cardInfoTable = $('#cardInfoTable').bootstrapTable({
         url: '../card/list',         //请求后台的URL（*）
-        method: 'post',                     //请求方式（*）
+        method: 'get',                     //请求方式（*）
         //toolbar: '#toolbar',                //工具按钮用哪个容器
         striped: true,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   //是否显示分页（*）
         sortable: false,                    //是否启用排序
         sortOrder: "asc",                   //排序方式
-        queryParams: queryParams,			//传递参数（*）
+        queryParams: function queryParams(params) {
+            var param = {
+                surHours: 1,
+                userName: $("#search_userName").val() || '',
+                date: $("#search_date").val() || '',
+                rows: params.limit,
+                page: params.offset / params.limit
+            };
+            return param;
+        },
         sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
         pageNumber: 1,                       //初始化加载第一页，默认第一页
         pageSize: 10,                       //每页的记录行数（*）
@@ -287,4 +327,8 @@ function initCardInfoTable() {
             }
         ]
     });
+}
+
+function queryCardInfo() {
+    $("#cardInfoTable").bootstrapTable('refresh');
 }

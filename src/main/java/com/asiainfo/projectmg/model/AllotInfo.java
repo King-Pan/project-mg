@@ -2,6 +2,7 @@ package com.asiainfo.projectmg.model;
 
 import lombok.Data;
 import org.hibernate.exception.DataException;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,11 +33,21 @@ public class AllotInfo {
     /**
      * 打卡日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
+
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
     /**
      * 需求id
      */
     private Long demandId;
+
+    /**
+     * 需求编码
+     */
+    private String demandCode;
     /**
      * 需求名称
      */
@@ -45,5 +56,10 @@ public class AllotInfo {
      * 打卡记录ID
      */
     private Long cardId;
+
+    /**
+     * 分配工时时长
+     */
+    private String hour;
 
 }

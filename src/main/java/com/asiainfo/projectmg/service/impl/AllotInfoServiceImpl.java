@@ -59,8 +59,8 @@ public class AllotInfoServiceImpl implements AllotInfoService {
     public Message<AllotInfo> getList(final AllotInfo allotInfo, Pageable pageable) {
         BootstrapMessage<AllotInfo> message = new BootstrapMessage<>();
         List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "userId"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "updateTime"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "userName"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "date"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(orders));
         Page<AllotInfo> cardInfoPage = allotInfoRepository.findAll(new Specification<AllotInfo>() {
             @Override
@@ -94,5 +94,45 @@ public class AllotInfoServiceImpl implements AllotInfoService {
         message.setTotal(cardInfoPage.getTotalElements());
         message.setStart(cardInfoPage.getNumberOfElements());
         return message;
+    }
+
+    @Override
+    public List<AllotInfo> getList(AllotInfo allotInfo) {
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "userName"));
+        orders.add(new Sort.Order(Sort.Direction.DESC, "date"));
+
+        List<AllotInfo> allotInfoList = allotInfoRepository.findAll(new Specification<AllotInfo>() {
+            @Override
+            public Predicate toPredicate(Root<AllotInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Path<String> userName = root.get("userName");
+                Path<Date> date = root.get("date");
+                Path<Date> endDate = root.get("date");
+                Path<String> demandName = root.get("demandName");
+
+                List<Predicate> wherePredicate = new ArrayList<>();
+                if (allotInfo != null) {
+                    if (allotInfo.getDemandName() != null) {
+                        wherePredicate.add(cb.like(demandName, "%" + allotInfo.getDemandName() + "%"));
+                    }
+                    if (allotInfo.getDate() != null) {
+                        wherePredicate.add(cb.greaterThanOrEqualTo(date, allotInfo.getDate()));
+                    }
+                    if (allotInfo.getEndDate() != null) {
+                        wherePredicate.add(cb.greaterThanOrEqualTo(date, allotInfo.getEndDate()));
+                    }
+                    if (StringUtils.isNoneBlank(allotInfo.getUserName())) {
+                        wherePredicate.add(cb.like(userName, "%" + allotInfo.getUserName() + "%"));
+                    }
+                }
+                Predicate[] predicates = new Predicate[]{};
+                //这里可以设置任意条查询条件
+                if (CollectionUtils.isNotEmpty(wherePredicate)) {
+                    query.where(wherePredicate.toArray(predicates));
+                }
+                return null;
+            }
+        }, new Sort(orders));
+        return allotInfoList;
     }
 }

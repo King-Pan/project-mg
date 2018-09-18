@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,7 +41,7 @@ public class DemandController {
         return new ModelAndView("demand");
     }
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public Object list(Demand demand, @PageableDefault Pageable pageable) {
         return demandService.getList(demand, pageable);
     }
@@ -86,10 +83,15 @@ public class DemandController {
 
     @RequestMapping("/allotHours")
     public ServerResponse allotHours(AllotForm allotForm, @RequestParam("ids[]") Long[] ids) {
-        allotForm.setCardIds(Arrays.asList(ids));
-        System.out.println(allotForm);
-        System.out.println(Arrays.toString(ids));
-        ServerResponse serverResponse = ServerResponse.createBySuccessMessage("分配成功");
+        ServerResponse serverResponse;
+        try {
+            allotForm.setCardIds(Arrays.asList(ids));
+            demandService.allotHours(allotForm);
+            serverResponse = ServerResponse.createBySuccessMessage("分配成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            serverResponse = ServerResponse.createByErrorMessage("分配失败:\n" + e.getMessage());
+        }
         return serverResponse;
     }
 }

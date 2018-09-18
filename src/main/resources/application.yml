@@ -6,7 +6,7 @@ spring:
       false
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/mg?verifyServerCertificate=false&useSSL=false
+    url: jdbc:mysql://47.92.72.146:3306/mg?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: 123456
     initialize: true

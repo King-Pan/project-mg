@@ -16,9 +16,16 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    public static final String FORMAT = "yyyy-MM-dd";
+
     public static Date getDateFromFormat(String dateText, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(format);
         DateTime dateTime = dateTimeFormatter.parseDateTime(dateText);
         return dateTime.toDate();
+    }
+
+    public static String getDateText(Date date) {
+        DateTime dateTime = new DateTime(date);
+        return dateTime.toString(FORMAT);
     }
 }

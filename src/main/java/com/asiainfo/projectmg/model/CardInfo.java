@@ -2,6 +2,7 @@ package com.asiainfo.projectmg.model;
 
 import com.asiainfo.projectmg.excel.ExcelColumn;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -43,6 +44,7 @@ public class CardInfo {
      */
     @ExcelColumn(value = "打卡日期", format = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date date;
 
     /**

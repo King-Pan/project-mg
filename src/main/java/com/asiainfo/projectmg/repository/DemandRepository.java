@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Time: 上午9:57
  * Description: No Description
  */
-@Transactional(rollbackFor = RuntimeException.class)
+
 public interface DemandRepository extends JpaRepository<Demand, Long>, QuerydslPredicateExecutor<Demand>, JpaSpecificationExecutor<Demand> {
     /**
      * 通过需求编码判断该需求是否存在

@@ -1,4 +1,5 @@
 $(function () {
+    initTable();
     $("#search_date").datetimepicker({
         format: "yyyy-mm-dd",
         minView: 2,
@@ -6,58 +7,12 @@ $(function () {
         autoclose: true,
         todayBtn: 1,
         todayHighlight: 1,
-        clearBtn:true
+        clearBtn: true
     });
-
-    initTable();
-    initEvent();
-
 });
 
-/**
- * 初始化绑定事件
- */
-function initEvent() {
-    //导入按钮
-    $("#importCardInfo").click(function () {
-        $("#importModal").modal('show');
-        $("#cardInfoExcelFile").fileinput({
-            language: 'zh_CN', //设置语言
-            uploadUrl: "fileUpload", //上传的地址
-            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
-            uploadAsync: true, //默认异步上传
-            showUpload: true, //是否显示上传按钮
-            showRemove: true, //显示移除按钮
-            showPreview: false, //是否显示预览
-            showCaption: true,//是否显示标题
-            enctype: 'multipart/form-data',
-            validateInitialCount: true,
-            uploadExtraData: function (previewId, index) {   //额外参数的关键点
-                var obj = {};
-                return obj;
-            }
-        }).on("fileuploaded", function (event, data, previewId, index) {
-            var status = data.response.status;
-            if (status == 200) {
-                layer.msg("导入成功");
-                $("#importModal").modal('hide');
-            } else {
-                layer.msg("导入失败");
-            }
-        });
-    });
-
-    $("#btnAdd").click(function () {
-        $("#infoModal").modal('show');
-    });
-    $("#btnAllot").click(function () {
-        $("#allotModal").modal('show');
-    });
-}
-
-
 function initTable() {
-    $('#cardInfoTable').bootstrapTable({
+    $('#allotInfoTable').bootstrapTable({
         url: 'list',         //请求后台的URL（*）
         method: 'get',                     //请求方式（*）
         toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -105,11 +60,6 @@ function initTable() {
                 visible: false
             }
             , {
-                field: 'userId',
-                title: '员工ID',
-                visible: false
-            }
-            , {
                 field: 'userName',
                 title: '员工姓名'
             }
@@ -118,42 +68,52 @@ function initTable() {
                 title: '打卡日期',
                 formatter: formatterUtils.getDayTime
             }, {
-                field: 'hours',
-                title: '打卡工时(时)'
+                field: 'demandName',
+                title: '需求名称'
             }, {
-                field: 'surHours',
-                title: '剩报未报工时'
-            }, {
-                field: 'createTime',
-                title: '创建时间',
-                formatter: formatterUtils.getFullTime
-            }, {
-                field: 'updateTime',
-                title: '更新时间',
-                formatter: formatterUtils.getFullTime
+                field: 'hour',
+                title: '分配时长'
             }
         ]
     });
 }
 
+function doQuery() {
+    $("#allotInfoTable").bootstrapTable('refresh');
+}
+
 function queryParams(params) {
     var param = {
-        surHours: $("*[name='surHours']:checked").val(),
+        name: $("#search_name").val() || '',
         userName: $("#search_userName").val() || '',
-        date: $("#search_date").val() || '',
+        date: $("#search_start_date").val() || '',
+        endDate: $("#search_end_date").val() || '',
         rows: params.limit,
         page: params.offset / params.limit
     };
     return param;
 }
 
-function queryCard() {
-    $("#cardInfoTable").bootstrapTable('refresh');
-}
+function download() {
 
-/**
- * 导出excel
- */
-function exportAllotInfo() {
-    
+    var url = $("#baseUrlA").attr("href") + "allot/download?1=1&";
+    var name = $("#search_name").val() || '';
+    if (name) {
+        url += "name=" + name + "&";
+    }
+    var userName = $("#search_userName").val() || ''
+    if (userName) {
+        url += "userName=" + userName + "&";
+    }
+    var date = $("#search_start_date").val() || '';
+    if (date) {
+        url += "date=" + date + "&";
+    }
+
+    var endDate = $("#search_end_date").val() || '';
+    if (endDate) {
+        url += "endDate=" + endDate + "&";
+    }
+    url += "2=2";
+    window.open(url);
 }
