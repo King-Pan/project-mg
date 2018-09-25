@@ -50,7 +50,11 @@ function initEvent() {
     });
 
     $("#btnAdd").click(function () {
+        $("#infoForm")[0].reset();
+        $("#id").val('');
         $("#infoModal").modal('show');
+        $("#code").removeAttr("readonly");
+        validate();
     });
     $("#btnAllot").click(function () {
         var recards = $("#demandTable").bootstrapTable('getSelections');
@@ -143,6 +147,138 @@ function initEvent() {
 
             }
         })
+    });
+
+    $("#btnModify").click(function () {
+        var recards = $('#demandTable').bootstrapTable('getSelections');
+        if (recards.length === 1) {
+            initModalData(recards[0]);
+            $("#infoModal").modal('show');
+            validate();
+        } else {
+            layer.msg('请选择一条需求进行修改');
+            return;
+        }
+
+    });
+}
+
+function initModalData(demand) {
+    $("#infoForm")[0].reset();
+    console.log(demand);
+    $("#infoForm").setForm(demand);
+    $("#code").attr("readonly", "readonly");
+}
+
+function infoSave() {
+    var jsonData = $("#infoForm").serializeJson();
+    $("#infoForm").bootstrapValidator('validate');//提交验证
+    if ($("#infoForm").data('bootstrapValidator').isValid()) {
+        if (parseFloat(jsonData.preHours) !== (parseFloat(jsonData.surHours) + parseFloat(jsonData.alHours))) {
+            layer.msg('工时计算错误: 预估工作量(时)= 已报工工时 + 剩报工工时');
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: bashPath + "demand/save",
+            data: jsonData,
+            success: function (data) {
+                if (data && data.status === 200) {
+                    $("#infoModal").modal('hide');
+                    doQuery();
+                }
+                layer.msg(data.msg);
+            },
+            error: function (data) {
+                layer.msg('请求失败: \n' + data);
+            }
+
+        })
+        return;
+    } else {
+        console.log("验证没有通过");
+    }
+}
+
+//验证表单输入
+function validate() {
+    $('#infoForm').bootstrapValidator({
+        live: 'enabled',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+        excluded: [':disabled', ':hidden', ':not(:visible)'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+        //submitButtons: '#btn_sub1',//指定提交按钮，如果验证失败则变成disabled，但我没试成功，反而加了这句话非submit按钮也会提交到action指定页面
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            code: {
+                message: '需求编码不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '需求编码不能为空'
+                    },
+                    regexp: {//正则验证
+                        regexp: /^[a-zA-Z0-9]+$/,
+                        message: '所输入的字符不符要求【必须是字母和数字】'
+                    },
+                }
+            },
+            name: {
+                message: '需求名称不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '需求名称不能为空'
+                    }
+                }
+            },
+            personDay: {
+                message: '预估工作量(天)不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '预估工作量(天)不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            },
+            preHours: {
+                validators: {
+                    notEmpty: {
+                        message: '预估工作量(时)'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            },
+            alHours: {
+                validators: {
+                    notEmpty: {
+                        message: '已报工工时不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            },
+            surHours: {
+                validators: {
+                    notEmpty: {
+                        message: '剩报工工时不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            }
+        }
     });
 }
 

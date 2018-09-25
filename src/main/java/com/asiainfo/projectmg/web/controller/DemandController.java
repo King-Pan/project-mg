@@ -94,4 +94,24 @@ public class DemandController {
         }
         return serverResponse;
     }
+
+    @RequestMapping("/save")
+    public ServerResponse update(Demand demand) {
+        ServerResponse serverResponse;
+        String msg = "";
+        System.out.println(demand);
+        try {
+            if (demand.getId() != null) {
+                msg = "修改需求";
+            } else {
+                msg = "新增需求";
+            }
+            demandService.save(demand);
+            serverResponse = ServerResponse.createBySuccessMessage(msg + "成功");
+        } catch (Exception e) {
+            log.error(msg + "失败:" + e.getMessage(), e);
+            serverResponse = ServerResponse.createByErrorMessage(msg + "失败:\n" + e.getMessage());
+        }
+        return serverResponse;
+    }
 }

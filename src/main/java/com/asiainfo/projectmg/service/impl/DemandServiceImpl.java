@@ -13,6 +13,8 @@ import com.asiainfo.projectmg.service.DemandService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +54,13 @@ public class DemandServiceImpl implements DemandService {
 
     @Override
     public void save(Demand demand) {
+        Demand d = demandRepository.getOne(demand.getId());
+        if (d == null) {
+            demand.setCreateTime(new Date());
+        } else {
+            demand.setCreateTime(d.getCreateTime());
+        }
+        demand.setUpdateTime(new Date());
         demandRepository.save(demand);
     }
 
@@ -181,13 +190,13 @@ public class DemandServiceImpl implements DemandService {
                 if (StringUtils.isBlank(demand.getPersonDay())) {
                     throw new RuntimeException("【预估工作量(天)】不能为空");
                 }
-                if(StringUtils.isBlank(demand.getPreHours())){
+                if (StringUtils.isBlank(demand.getPreHours())) {
                     throw new RuntimeException("【预估工作量(时)】不能为空");
                 }
-                if(StringUtils.isBlank(demand.getPreHours())){
+                if (StringUtils.isBlank(demand.getPreHours())) {
                     throw new RuntimeException("【已报工工时】不能为空");
                 }
-                if(StringUtils.isBlank(demand.getPreHours())){
+                if (StringUtils.isBlank(demand.getPreHours())) {
                     throw new RuntimeException("【剩报工工时】不能为空");
                 }
 
