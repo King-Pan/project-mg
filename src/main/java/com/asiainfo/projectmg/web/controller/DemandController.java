@@ -99,7 +99,7 @@ public class DemandController {
     public ServerResponse update(Demand demand) {
         ServerResponse serverResponse;
         String msg = "";
-        System.out.println(demand);
+        log.info("修改参数: {}", demand);
         try {
             if (demand.getId() != null) {
                 msg = "修改需求";
