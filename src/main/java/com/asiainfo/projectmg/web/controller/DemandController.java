@@ -36,7 +36,7 @@ public class DemandController {
     @Autowired
     private DemandService demandService;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public ModelAndView page() {
         return new ModelAndView("demand");
     }
