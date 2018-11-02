@@ -6,6 +6,9 @@ spring:
       false
     cache: false
   datasource:
+#    url: jdbc:mysql://10.31.100.157:3306/mg?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#    username: hbwork
+#    password: Hbwork157%%
     url: jdbc:mysql://47.92.72.146:3306/mg?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: 123456

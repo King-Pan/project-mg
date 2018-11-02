@@ -114,4 +114,19 @@ public class DemandController {
         }
         return serverResponse;
     }
+
+
+    @DeleteMapping("/")
+    public ServerResponse batchDelete(@RequestParam("ids[]") Long[] ids) {
+        log.info("需要删除的需求ID： " + Arrays.toString(ids));
+        ServerResponse serverResponse;
+        try {
+            demandService.deleteBatch(Arrays.asList(ids));
+            serverResponse = ServerResponse.createBySuccessMessage("删除需求成功");
+        } catch (Exception e) {
+            log.error("删除需求失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("删除需求失败\n " + e.getMessage());
+        }
+        return serverResponse;
+    }
 }

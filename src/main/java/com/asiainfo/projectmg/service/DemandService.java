@@ -38,12 +38,21 @@ public interface DemandService {
      */
     void delete(Long id);
 
+
+    /**
+     * 通过ID删除需求
+     *
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
+
     /**
      * 获取需求列表
      *
      * @return
      */
     List<Demand> getList();
+
 
 
     /**

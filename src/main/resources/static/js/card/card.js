@@ -6,8 +6,20 @@ $(function () {
         autoclose: true,
         todayBtn: 1,
         todayHighlight: 1,
-        clearBtn:true
+        clearBtn: true
     });
+
+
+    $("#date").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: 2,
+        language: 'zh-CN',
+        autoclose: true,
+        todayBtn: 1,
+        todayHighlight: 1,
+        clearBtn: true
+    });
+
 
     initTable();
     initEvent();
@@ -49,12 +61,152 @@ function initEvent() {
 
     $("#btnAdd").click(function () {
         $("#infoModal").modal('show');
+        validate();
     });
     $("#btnAllot").click(function () {
         $("#allotModal").modal('show');
     });
+
+    $("#btnModify").click(function () {
+        var recards = $('#cardInfoTable').bootstrapTable('getSelections');
+        if (recards.length === 1) {
+            initModalData(recards[0]);
+            $("#infoModal").modal('show');
+            validate();
+        } else {
+            layer.msg('请选择一条需求进行修改');
+            return;
+        }
+
+    });
+
+    //删除打卡记录
+    $("#btn_delete").click(function () {
+        var recards = $('#cardInfoTable').bootstrapTable('getSelections');
+        if (recards.length > 0) {
+            var ids = new Array();
+            recards.forEach(function (item) {
+                ids.push(item.id);
+            });
+            layer.confirm('是否确定要删除该数据？', {
+                btn: ['是', '否'] //按钮
+            }, function () {
+                $.ajax({
+                    url: bashPath + "card/",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        _method: 'DELETE',
+                        ids: ids
+                    },
+                    success: function (data) {
+                        layer.alert(data.msg, {icon: 6});
+                        if (data.status === 200) {
+                            $("#cardInfoTable").bootstrapTable('refresh');
+                        }
+                    },
+                    error: function () {
+                        layer.alert('批量删除数据失败', {icon: 6});
+                    }
+                })
+            }, function () {
+
+            });
+        } else {
+            layer.msg('请选择一条需求进行修改');
+            return;
+        }
+    });
 }
 
+function initModalData(card) {
+    $("#infoForm")[0].reset();
+    console.log(card);
+    $("#infoForm").setForm(card);
+}
+
+function infoSave() {
+    var jsonData = $("#infoForm").serializeJson();
+    $("#infoForm").bootstrapValidator('validate');//提交验证
+    if ($("#infoForm").data('bootstrapValidator').isValid()) {
+        $.ajax({
+            type: 'post',
+            url: bashPath + "card/save",
+            data: jsonData,
+            success: function (data) {
+                if (data && data.status === 200) {
+                    $("#infoModal").modal('hide');
+                    doQuery();
+                }
+                layer.msg(data.msg);
+            },
+            error: function (data) {
+                layer.msg('请求失败: \n' + data);
+            }
+
+        })
+        return;
+    }
+}
+
+function doQuery() {
+    $('#cardInfoTable').bootstrapTable('refresh');
+}
+
+//验证表单输入
+function validate() {
+    $('#infoForm').bootstrapValidator({
+        live: 'enabled',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+        excluded: [':disabled', ':hidden', ':not(:visible)'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+        //submitButtons: '#btn_sub1',//指定提交按钮，如果验证失败则变成disabled，但我没试成功，反而加了这句话非submit按钮也会提交到action指定页面
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            userName: {
+                message: '员工姓名不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '员工姓名不能为空'
+                    }
+                }
+            },
+            date: {
+                trigger: 'change',
+                validators: {
+                    notEmpty: {
+                        message: '打卡日期不能为空'
+                    }
+                }
+            },
+            hours: {
+                validators: {
+                    notEmpty: {
+                        message: '打卡工时(时)不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            },
+            surHours: {
+                validators: {
+                    notEmpty: {
+                        message: '剩报工工时不能为空'
+                    },
+                    regexp: {
+                        regexp: /^\d+(\.\d{1,2})?$/,
+                        message: '请输入正确的正数'
+                    }
+                }
+            }
+        }
+    });
+}
 
 function initTable() {
     $('#cardInfoTable').bootstrapTable({
@@ -155,5 +307,5 @@ function queryCard() {
  * 导出excel
  */
 function exportAllotInfo() {
-    
+
 }

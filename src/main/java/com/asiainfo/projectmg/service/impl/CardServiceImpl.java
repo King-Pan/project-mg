@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = RuntimeException.class)
 public class CardServiceImpl implements CardService {
 
 
@@ -39,6 +41,17 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void save(CardInfo card) {
+        if (card != null && card.getId() != null) {
+            CardInfo cardinfo = cardRepository.getOne(card.getId());
+            if (cardinfo != null) {
+                card.setCreateTime(cardinfo.getCreateTime());
+            } else {
+                card.setCreateTime(new Date());
+            }
+        } else {
+            card.setCreateTime(new Date());
+        }
+        card.setUpdateTime(new Date());
         cardRepository.save(card);
     }
 
@@ -61,6 +74,11 @@ public class CardServiceImpl implements CardService {
                 save(cardInfo);
             }
         }
+    }
+
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        cardRepository.deleteCardInfosByIdIn(ids);
     }
 
     @Override

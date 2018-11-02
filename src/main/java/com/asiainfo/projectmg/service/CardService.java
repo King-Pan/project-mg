@@ -30,6 +30,13 @@ public interface CardService {
     void saveList(List<CardInfo> cardList);
 
     /**
+     * 通过ID删除打卡记录
+     *
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
+
+    /**
      * 通过cardId 查询CardInfo集合
      *
      * @param cardIds

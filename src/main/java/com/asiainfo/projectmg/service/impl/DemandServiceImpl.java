@@ -52,13 +52,16 @@ public class DemandServiceImpl implements DemandService {
 
     @Override
     public void save(Demand demand) {
-        Demand d = demandRepository.getOne(demand.getId());
-        if (d == null) {
-            demand.setCreateTime(new Date());
-        } else {
-            demand.setCreateTime(d.getCreateTime());
+        if(demand!=null && demand.getId()!=null){
+            Demand d = demandRepository.getOne(demand.getId());
+            if (d == null) {
+                demand.setCreateTime(new Date());
+            } else {
+                demand.setCreateTime(d.getCreateTime());
+            }
+        }else{
+            demand.setUpdateTime(new Date());
         }
-        demand.setUpdateTime(new Date());
         demandRepository.save(demand);
     }
 
@@ -206,6 +209,11 @@ public class DemandServiceImpl implements DemandService {
     @Override
     public void delete(Long id) {
         demandRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        demandRepository.deleteDemandsByIdIn(ids);
     }
 
     @Override

@@ -161,6 +161,44 @@ function initEvent() {
         }
 
     });
+
+    //删除需求
+    $("#btn_delete").click(function () {
+        var recards = $('#demandTable').bootstrapTable('getSelections');
+        if (recards.length > 0) {
+            var ids = new Array();
+            recards.forEach(function (item) {
+                ids.push(item.id);
+            });
+            layer.confirm('是否确定要删除该数据？', {
+                btn: ['是', '否'] //按钮
+            }, function () {
+                $.ajax({
+                    url: bashPath + "demand/",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        _method: 'DELETE',
+                        ids: ids
+                    },
+                    success: function (data) {
+                        layer.alert(data.msg, {icon: 6});
+                        if (data.status === 200) {
+                            $("#demandTable").bootstrapTable('refresh');
+                        }
+                    },
+                    error: function () {
+                        layer.alert('批量删除数据失败', {icon: 6});
+                    }
+                })
+            }, function () {
+
+            });
+        } else {
+            layer.msg('请选择一条需求进行修改');
+            return;
+        }
+    });
 }
 
 function initModalData(demand) {

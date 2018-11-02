@@ -22,8 +22,16 @@ public interface CardRepository extends JpaRepository<CardInfo, Long>, QuerydslP
 
     /**
      * 通过cardId获取cardinfo集合
+     *
      * @param cardIds
      * @return
      */
     List<CardInfo> findByIdIn(List<Long> cardIds);
+
+    /**
+     * 删除打卡记录
+     *
+     * @param ids
+     */
+    void deleteCardInfosByIdIn(List<Long> ids);
 }

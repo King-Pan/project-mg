@@ -34,6 +34,7 @@
     </style>
 </head>
 <body>
+<input type="hidden" id="basePath" th:value="@{/}">
 <div class="container">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -53,17 +54,17 @@
                     <li class="active"><a th:href="@{/card/}">打卡管理</a></li>
                     <li><a th:href="@{/allot/}">分配工时管理</a></li>
                     <!--<li class="dropdown">-->
-                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
-                           <!--aria-expanded="false">Dropdown <span class="caret"></span></a>-->
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a href="#">Action</a></li>-->
-                            <!--<li><a href="#">Another action</a></li>-->
-                            <!--<li><a href="#">Something else here</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li class="dropdown-header">Nav header</li>-->
-                            <!--<li><a href="#">Separated link</a></li>-->
-                            <!--<li><a href="#">One more separated link</a></li>-->
-                        <!--</ul>-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+                    <!--aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                    <!--<li><a href="#">Action</a></li>-->
+                    <!--<li><a href="#">Another action</a></li>-->
+                    <!--<li><a href="#">Something else here</a></li>-->
+                    <!--<li role="separator" class="divider"></li>-->
+                    <!--<li class="dropdown-header">Nav header</li>-->
+                    <!--<li><a href="#">Separated link</a></li>-->
+                    <!--<li><a href="#">One more separated link</a></li>-->
+                    <!--</ul>-->
                     <!--</li>-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -82,7 +83,7 @@
                 <div class="panel-heading"
                      style="font-weight: bold; background-color: #f5fafe; border-bottom: solid 1px #eee;">查询条件
                     <span style="float:right;">
-	            	<p class="qry-btn" style="text-decoration: none;"  onclick="queryCard()">
+	            	<p class="qry-btn" style="text-decoration: none;" onclick="queryCard()">
 						<span class="glyphicon glyphicon-search"></span>查询
 	            	</p>
 				</span>
@@ -116,19 +117,16 @@
             </div>
             <div id="toolbar" class="btn-group" style="margin-top: 15px;margin-bottom: 15px;">
                 <button id="btnAdd" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span>添加需求
+                    <span class="glyphicon glyphicon-plus"></span>添加打卡记录
                 </button>
-                <button id="btnAllot" type="button" class="btn btn-default" onclick="deleteUser()">
-                    <span class="glyphicon glyphicon-cog"></span>分配工时
-                </button>
-                <button id="btn_add" type="button" class="btn btn-default" onclick="infoModal()">
-                    <span class="glyphicon glyphicon-plus"></span>修改需求
+                <button id="btnModify" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>修改打卡记录
                 </button>
                 <button type="button" class="btn btn-default" id="importCardInfo">
                     <span class="glyphicon glyphicon-upload"></span>导入打卡记录
                 </button>
-                <button id="btn_export" type="button" class="btn btn-default" onclick="exportUserList()">
-                    <span class="glyphicon glyphicon-export	"></span>导出需求
+                <button id="btn_delete" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-export	"></span>删除打卡记录
                 </button>
             </div>
             <table id="cardInfoTable"></table>
@@ -180,64 +178,43 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加需求</h4>
+                <h4 class="modal-title" id="myModalLabel">添加打卡记录</h4>
             </div>
             <div class="modal-body" style="width: 95%">
                 <form class="form-horizontal" id="infoForm" method="POST" role="form">
                     <div class="form-group" style="">
                         <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户编号：</label>
+                        <label class="col-sm-4 col-xs-7 control-label" for="userName">员工姓名 ：</label>
                         <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="userId" id="userId" value="" class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">用户中文名：</label>
-                        <div class="col-xs-8 col-sm-7">
+                            <input type="hidden" id="id" name="id">
                             <input placeholder="" name="userName" id="userName" value="" class="form-control"
                                    type="text">
                         </div>
                     </div>
                     <div class="form-group" style="">
                         <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">地市：</label>
+                        <label class="col-sm-4 col-xs-7 control-label" for="date">打卡日期 ：</label>
                         <div class="col-xs-8 col-sm-7">
-                            <select id="areaId" name="areaId" class="form-control">
-                            </select>
+                            <div class="input-append date form_datetime">
+                                <input type="text" name="date" class="form-control" id="date" readonly>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group" style="">
                         <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">区县：</label>
+                        <label class="col-sm-4 col-xs-7 control-label" for="hours">打卡工时(时)：</label>
                         <div class="col-xs-8 col-sm-7">
-                            <select id="cityId" name="cityId" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">状态：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <select name="statusVal" id="statusVal" class="form-control" style="width: 100%;">
-                                <option value="0">关闭</option>
-                                <option value="1">启用</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" style="">
-                        <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">电话：</label>
-                        <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="phoneNum" id="phoneNum" value="" class="form-control"
+                            <input placeholder="" name="hours" id="hours" value="" class="form-control"
                                    type="text">
                         </div>
                     </div>
                     <div class="form-group" style="">
                         <!-- Text input-->
-                        <label class="col-sm-4 col-xs-7 control-label" for="input01">邮箱：</label>
+                        <label class="col-sm-4 col-xs-7 control-label" for="surHours">剩报未报工时 ：</label>
                         <div class="col-xs-8 col-sm-7">
-                            <input placeholder="" name="email" id="email" value="" class="form-control" type="text">
+                            <input placeholder="" name="surHours" id="surHours" value="" class="form-control"
+                                   type="text">
                         </div>
                     </div>
                     <div class="form-group" style="">
@@ -298,7 +275,7 @@
         th:src="@{/api/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 <script th:src="@{/api/layui/layui.all.js}"
         src="../static/api/layui/layui.all.js"></script>
-<script src="../static/js/demand/demand.js" th:src="@{/js/card/card.js}"></script>
+<script src="../static/js/card/card.js" th:src="@{/js/card/card.js}"></script>
 <script src="../static/js/commons.js" th:src="@{/js/commons.js}"></script>
 </body>
 </html>
