@@ -1,5 +1,6 @@
 package com.asiainfo.projectmg.web.controller;
 
+import com.asiainfo.projectmg.common.ServerResponse;
 import com.asiainfo.projectmg.model.AllotInfo;
 import com.asiainfo.projectmg.service.AllotInfoService;
 import com.asiainfo.projectmg.util.ExportExcelUtil;
@@ -7,12 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,6 +56,20 @@ public class AllotController {
             e.printStackTrace();
         }
 
+    }
+
+    @DeleteMapping("/")
+    public ServerResponse batchDelete(@RequestParam("ids[]") Long[] ids) {
+        log.info("需要删除的打卡记录ID： " + Arrays.toString(ids));
+        ServerResponse serverResponse;
+        try {
+            allotInfoService.deleteBatch(Arrays.asList(ids));
+            serverResponse = ServerResponse.createBySuccessMessage("删除分配记录成功");
+        } catch (Exception e) {
+            log.error("删除打卡记录失败\n", e);
+            serverResponse = ServerResponse.createByErrorMessage("删除分配记录失败\n " + e.getMessage());
+        }
+        return serverResponse;
     }
 
 

@@ -38,6 +38,14 @@ public interface AllotInfoService {
 
 
     /**
+     * 通过ID删除分配记录
+     *
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
+
+
+    /**
      * 分页获取需求列表
      *
      * @param allotInfo 查询参数

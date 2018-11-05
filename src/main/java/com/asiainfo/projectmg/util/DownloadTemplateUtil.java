@@ -23,8 +23,6 @@ public class DownloadTemplateUtil {
             FileUtils.copyInputStreamToFile(stream, targetFile);
 
             InputStream is = new FileInputStream(targetFile);
-            System.out.println(stream.available());
-            System.out.println(is.available());
 
             response.reset();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");

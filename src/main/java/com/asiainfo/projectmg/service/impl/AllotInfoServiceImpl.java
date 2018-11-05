@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = RuntimeException.class)
 public class AllotInfoServiceImpl implements AllotInfoService {
 
     @Autowired
@@ -53,6 +55,11 @@ public class AllotInfoServiceImpl implements AllotInfoService {
     @Override
     public void delete(Long id) {
         allotInfoRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        allotInfoRepository.deleteAllotInfoByIdIn(ids);
     }
 
     @Override

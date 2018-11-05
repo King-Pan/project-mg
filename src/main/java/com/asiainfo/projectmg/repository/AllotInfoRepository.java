@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,4 +18,11 @@ import java.util.Date;
  * Description: No Description
  */
 public interface AllotInfoRepository extends JpaRepository<AllotInfo, Long>, QuerydslPredicateExecutor<AllotInfo>, JpaSpecificationExecutor<AllotInfo> {
+
+    /**
+     * 删除打卡记录
+     *
+     * @param ids
+     */
+    void deleteAllotInfoByIdIn(List<Long> ids);
 }

@@ -9,6 +9,44 @@ $(function () {
         todayHighlight: 1,
         clearBtn: true
     });
+
+    //删除分配记录
+    $("#btn_delete").click(function () {
+        var recards = $('#allotInfoTable').bootstrapTable('getSelections');
+        if (recards.length > 0) {
+            var ids = new Array();
+            recards.forEach(function (item) {
+                ids.push(item.id);
+            });
+            layer.confirm('是否确定要删除该数据？', {
+                btn: ['是', '否'] //按钮
+            }, function () {
+                $.ajax({
+                    url: bashPath + "allot/",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        _method: 'DELETE',
+                        ids: ids
+                    },
+                    success: function (data) {
+                        layer.alert(data.msg, {icon: 6});
+                        if (data.status === 200) {
+                            $("#allotInfoTable").bootstrapTable('refresh');
+                        }
+                    },
+                    error: function () {
+                        layer.alert('批量删除数据失败', {icon: 6});
+                    }
+                })
+            }, function () {
+
+            });
+        } else {
+            layer.msg('请选择一条需求进行修改');
+            return;
+        }
+    });
 });
 
 function initTable() {
