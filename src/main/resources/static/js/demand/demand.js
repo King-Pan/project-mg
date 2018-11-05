@@ -70,6 +70,8 @@ function initEvent() {
     $("#btnAllotHours").click(function () {
 
 
+        var sumHours = 0;
+
         //1. 验证值是否填写正确
 
         var records = $("#cardInfoTable").bootstrapTable('getSelections');
@@ -83,9 +85,13 @@ function initEvent() {
         //该需求剩余工时
         var surHours = parseFloat(demand.surHours);
 
-        //定额分配工时数量
 
+
+        // 获取分配的打卡记录ID
+        var cardIds = new Array();
         var hour = $("#hour").val();
+
+        //定额分配工时数量
         if (type === '0') {
             var reg = new RegExp("^[0-9]+(.[0-9]{1})?$");
             if (!hour || !reg.test(hour)) {
@@ -100,23 +106,26 @@ function initEvent() {
             for (var i = 0; i < records.length; i++) {
                 var record = records[i];
                 if (parseFloat(record.surHours) < hour) {
-                    layer.msg('员工:' + record.userName + ",打开日期:" + record.date + ",剩余工时不足.请重新选择");
+                    layer.msg('员工:' + record.userName + ",打卡日期:" + record.date + ",剩余工时不足.请重新选择");
                     flag = false;
                     break;
                 }
             }
             if (!flag) {
                 return;
+            }else{
+                for (var i = 0; i < records.length; i++) {
+                    var record = records[i];
+                    cardIds.push(record.id);
+                    sumHours += hour;
+                }
             }
-        }
-
-        // 获取分配的打卡记录ID
-        var sumHours = 0;
-        var cardIds = new Array();
-        for (var i = 0; i < records.length; i++) {
-            var record = records[i];
-            cardIds.push(record.id);
-            sumHours += parseFloat(record.surHours);
+        }else{
+            for (var i = 0; i < records.length; i++) {
+                var record = records[i];
+                cardIds.push(record.id);
+                sumHours += parseFloat(record.surHours);
+            }
         }
 
         // 需要分配的工时总量是否小于等于该需求剩余工时

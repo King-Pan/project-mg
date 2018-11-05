@@ -1,11 +1,9 @@
 package com.asiainfo.projectmg.util;
 
-import com.asiainfo.projectmg.web.controller.DemandController;
+import org.apache.commons.io.FileUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,17 +15,24 @@ import java.io.OutputStream;
  */
 public class DownloadTemplateUtil {
 
-    public static synchronized void downloadTeplate(final HttpServletResponse response,String path,String name){
+    public static synchronized void downloadTeplate(final HttpServletResponse response, String path, String name) {
         try {
             String fileName = name + System.currentTimeMillis() + ".xlsx";
-            InputStream inputStream = DemandController.class.getClassLoader().getResourceAsStream(path);
+            InputStream stream = DownloadTemplateUtil.class.getClassLoader().getResourceAsStream(path);
+            File targetFile = new File(fileName);
+            FileUtils.copyInputStreamToFile(stream, targetFile);
+
+            InputStream is = new FileInputStream(targetFile);
+            System.out.println(stream.available());
+            System.out.println(is.available());
+
             response.reset();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            response.addHeader("Content-Length", "" + inputStream.available());
+            response.addHeader("Content-Length", "" + is.available());
             response.setContentType("application/octet-stream;charset=UTF-8");
             OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-            byte[] datas = new byte[inputStream.available()];
-            inputStream.read(datas);
+            byte[] datas = new byte[is.available()];
+            is.read(datas);
             outputStream.write(datas);
             outputStream.flush();
             outputStream.close();

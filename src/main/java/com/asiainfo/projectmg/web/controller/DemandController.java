@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class DemandController {
 
     @RequestMapping("/downloadExcelTemplate")
     public void downloadExcelTemplate(final HttpServletResponse response) {
-        String path = "excel" + File.separator + "demand.xlsx";
+        String path = "excel/demand.xlsx";
         DownloadTemplateUtil.downloadTeplate(response, path, "demand_info_");
     }
 

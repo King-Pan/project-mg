@@ -60,6 +60,7 @@ public class DemandServiceImpl implements DemandService {
                 demand.setCreateTime(d.getCreateTime());
             }
         }else{
+            demand.setCreateTime(new Date());
             demand.setUpdateTime(new Date());
         }
         demandRepository.save(demand);

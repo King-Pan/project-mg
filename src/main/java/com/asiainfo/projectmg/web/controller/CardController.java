@@ -2,7 +2,6 @@ package com.asiainfo.projectmg.web.controller;
 
 import com.asiainfo.projectmg.common.ServerResponse;
 import com.asiainfo.projectmg.model.CardInfo;
-import com.asiainfo.projectmg.model.Demand;
 import com.asiainfo.projectmg.service.CardService;
 import com.asiainfo.projectmg.util.DownloadTemplateUtil;
 import com.asiainfo.projectmg.util.ExcelUtil;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -79,7 +77,7 @@ public class CardController {
 
     @RequestMapping("/downloadExcelTemplate")
     public void downloadExcelTemplate(final HttpServletResponse response) {
-        String path = "excel" + File.separator + "card.xlsx";
+        String path = "excel/card.xlsx";
         DownloadTemplateUtil.downloadTeplate(response, path, "card_info_");
     }
 
