@@ -105,7 +105,10 @@ function initTable() {
                 field: 'date',
                 title: '打卡日期',
                 formatter: formatterUtils.getDayTime
-            }, {
+            },  {
+                field: 'demandCode',
+                title: '需求编号'
+            },{
                 field: 'demandName',
                 title: '需求名称'
             }, {

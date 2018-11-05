@@ -166,3 +166,18 @@ Caused by: java.io.EOFException: Can not read response from server. Expected to 
 ===2018-11-05 11:46:17.024 WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration Line:235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 ===2018-11-05 11:46:17.193 WARN  org.thymeleaf.templatemode.TemplateMode Line:150 - [THYMELEAF][restartedMain] Template Mode 'LEGACYHTML5' is deprecated. Using Template Mode 'HTML' instead.
 ===2018-11-05 11:46:17.595 WARN  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer Line:61  - Unable to start LiveReload server
+===2018-11-05 12:53:47.815 WARN  com.zaxxer.hikari.pool.PoolBase Line:173 - DatebookHikariCP - Failed to validate connection com.mysql.jdbc.JDBC4Connection@38058cbe (No operations allowed after connection closed.)
+===2018-11-05 12:53:49.405 WARN  com.zaxxer.hikari.pool.PoolBase Line:173 - DatebookHikariCP - Failed to validate connection com.mysql.jdbc.JDBC4Connection@32379a2d (No operations allowed after connection closed.)
+===2018-11-05 12:53:50.701 WARN  com.zaxxer.hikari.pool.PoolBase Line:173 - DatebookHikariCP - Failed to validate connection com.mysql.jdbc.JDBC4Connection@57aca507 (No operations allowed after connection closed.)
+===2018-11-05 12:53:51.774 WARN  com.zaxxer.hikari.pool.PoolBase Line:173 - DatebookHikariCP - Failed to validate connection com.mysql.jdbc.JDBC4Connection@3074ce8f (No operations allowed after connection closed.)
+===2018-11-05 12:53:52.828 WARN  com.zaxxer.hikari.pool.PoolBase Line:173 - DatebookHikariCP - Failed to validate connection com.mysql.jdbc.JDBC4Connection@79388685 (No operations allowed after connection closed.)
+===2018-11-05 12:54:12.808 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08003
+===2018-11-05 12:54:12.811 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08003
+===2018-11-05 12:54:14.401 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08003
+===2018-11-05 12:54:14.405 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08003
+===2018-11-05 12:54:15.701 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08S01
+===2018-11-05 12:54:15.709 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: 08S01
+===2018-11-05 12:54:16.778 WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper Line:129 - SQL Error: 0, SQLState: null
+===2018-11-05 12:54:39.650 WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration Line:235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+===2018-11-05 12:54:39.829 WARN  org.thymeleaf.templatemode.TemplateMode Line:150 - [THYMELEAF][restartedMain] Template Mode 'LEGACYHTML5' is deprecated. Using Template Mode 'HTML' instead.
+===2018-11-05 12:54:40.272 WARN  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer Line:61  - Unable to start LiveReload server
