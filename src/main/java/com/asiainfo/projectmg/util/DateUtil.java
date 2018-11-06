@@ -24,6 +24,12 @@ public class DateUtil {
         return dateTime.toDate();
     }
 
+    public static Date getDateFromFormat(String dateText) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(FORMAT);
+        DateTime dateTime = dateTimeFormatter.parseDateTime(dateText);
+        return dateTime.toDate();
+    }
+
     public static String getDateText(Date date) {
         DateTime dateTime = new DateTime(date);
         return dateTime.toString(FORMAT);

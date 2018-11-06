@@ -69,7 +69,6 @@ function initEvent() {
     //分配工时确定按钮
     $("#btnAllotHours").click(function () {
 
-
         var sumHours = 0;
 
         //1. 验证值是否填写正确
@@ -81,7 +80,12 @@ function initEvent() {
         }
         console.log(records);
         var type = $("*[name='type']:checked").val();
-        var demand = $("#demandTable").bootstrapTable('getSelections')[0];
+        var demands = $("#demandTable").bootstrapTable('getSelections');
+        if(demands.length === 0 ){
+            layer.msg('请选择需要分配工时的需求');
+            return;
+        }
+        var demand = demands[0];
         //该需求剩余工时
         var surHours = parseFloat(demand.surHours);
 
@@ -148,8 +152,10 @@ function initEvent() {
             success: function (data) {
                 layer.msg(data.msg);
                 if (data.status === 200) {
-                    $("#demandTable").bootstrapTable('refresh');
-                    $("#cardInfoTable").bootstrapTable('refresh');
+                   //$("#demandTable").bootstrapTable('refresh');
+                   // $("#demandTable").bootstrapTable('checkBy',{field:'id',values:[demand.id]});
+                     demand.surHours = surHours - sumHours;
+                     $("#demandTable").bootstrapTable('updateRow',demand);
                 }
             },
             error: function () {
@@ -465,8 +471,8 @@ function initCardInfoTable() {
         showRefresh: false,                  //是否显示刷新按钮
         minimumCountColumns: 2,             //最少允许的列数
         height: 350,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-        uniqueId: "userId",                     //每一行的唯一标识，一般为主键列
-        idField: "userId",
+        uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+        idField: "id",
         showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
         cardView: false,                    //是否显示详细视图
         detailView: false,                  //是否显示父子表

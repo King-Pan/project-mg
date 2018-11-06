@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,15 @@ public class AllotInfoServiceImpl implements AllotInfoService {
     public void saveList(List<AllotInfo> allotInfoList) {
         if (CollectionUtils.isNotEmpty(allotInfoList)) {
             for (AllotInfo allotInfo : allotInfoList) {
-                save(allotInfo);
+                AllotInfo info = allotInfoRepository.getByAndDemandCodeAndDateAndAndUserName(allotInfo.getDemandCode(),allotInfo.getDate(),allotInfo.getUserName());
+                if(info==null){
+                    save(allotInfo);
+                }else{
+                    BigDecimal bigDecimal = new BigDecimal(info.getHour());
+                    bigDecimal = bigDecimal.add(new BigDecimal(allotInfo.getHour()));
+                    info.setHour(bigDecimal.toString());
+                    save(info);
+                }
             }
         }
     }

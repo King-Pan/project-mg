@@ -25,4 +25,6 @@ public interface AllotInfoRepository extends JpaRepository<AllotInfo, Long>, Que
      * @param ids
      */
     void deleteAllotInfoByIdIn(List<Long> ids);
+
+    AllotInfo getByAndDemandCodeAndDateAndAndUserName(String demandName,Date date,String userName);
 }
