@@ -405,11 +405,13 @@ function initTable() {
             }, {
                 field: 'createTime',
                 title: '创建时间',
-                formatter: formatterUtils.getFullTime
+                formatter: formatterUtils.getFullTime,
+                visible: false
             }, {
                 field: 'updateTime',
                 title: '更新时间',
-                formatter: formatterUtils.getFullTime
+                formatter: formatterUtils.getFullTime,
+                visible: false
             }
         ]
     });
@@ -419,7 +421,7 @@ function queryParams(params) {
     var param = {
         code: $("#search_code").val() || '',
         name: $("#search_name").val() || '',
-        rows: params.limit,
+        size: params.limit,
         page: params.offset / params.limit
     };
     return param;
@@ -448,7 +450,7 @@ function initCardInfoTable() {
                 surHours: 1,
                 userName: $("#search_userName").val() || '',
                 date: $("#search_date").val() || '',
-                rows: params.limit,
+                size: params.limit,
                 page: params.offset / params.limit
             };
             return param;
@@ -462,7 +464,7 @@ function initCardInfoTable() {
         showColumns: false,                  //是否显示所有的列
         showRefresh: false,                  //是否显示刷新按钮
         minimumCountColumns: 2,             //最少允许的列数
-        height: 200,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+        height: 350,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
         uniqueId: "userId",                     //每一行的唯一标识，一般为主键列
         idField: "userId",
         showToggle: false,                    //是否显示详细视图和列表视图的切换按钮

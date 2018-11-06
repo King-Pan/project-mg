@@ -293,7 +293,7 @@ function queryParams(params) {
         surHours: $("*[name='surHours']:checked").val(),
         userName: $("#search_userName").val() || '',
         date: $("#search_date").val() || '',
-        rows: params.limit,
+        size: params.limit,
         page: params.offset / params.limit
     };
     return param;

@@ -129,7 +129,7 @@ function queryParams(params) {
         userName: $("#search_userName").val() || '',
         date: $("#search_start_date").val() || '',
         endDate: $("#search_end_date").val() || '',
-        rows: params.limit,
+        size: params.limit,
         page: params.offset / params.limit
     };
     return param;

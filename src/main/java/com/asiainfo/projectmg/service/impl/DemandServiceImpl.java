@@ -70,8 +70,7 @@ public class DemandServiceImpl implements DemandService {
     public Message<Demand> getList(final Demand demand, Pageable pageable) {
         BootstrapMessage<Demand> message = new BootstrapMessage<>();
         List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "updateTime"));
-        orders.add(new Sort.Order(Sort.Direction.ASC, "id"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "code"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(orders));
         Page<Demand> demandPage = demandRepository.findAll(new Specification<Demand>() {
             @Override
