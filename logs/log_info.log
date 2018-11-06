@@ -1117,3 +1117,9 @@ Error starting ApplicationContext. To display the conditions report re-run your 
 ===2018-11-05 12:58:08.036 INFO  com.asiainfo.projectmg.service.impl.CardServiceImpl Line:64  - 更新打卡记录
 ===2018-11-05 12:58:08.166 INFO  com.asiainfo.projectmg.service.impl.CardServiceImpl Line:64  - 更新打卡记录
 ===2018-11-05 12:58:08.300 INFO  com.asiainfo.projectmg.service.impl.CardServiceImpl Line:64  - 更新打卡记录
+===2018-11-05 13:03:17.744 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1c18bd5b: startup date [Mon Nov 05 12:54:26 CST 2018]; root of context hierarchy
+===2018-11-05 13:03:17.801 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
+===2018-11-05 13:03:17.804 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:185 - Unregistering JMX-exposed beans
+===2018-11-05 13:03:17.808 INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Line:597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+===2018-11-05 13:03:17.829 INFO  com.zaxxer.hikari.HikariDataSource Line:381 - DatebookHikariCP - Shutdown initiated...
+===2018-11-05 13:03:18.267 INFO  com.zaxxer.hikari.HikariDataSource Line:383 - DatebookHikariCP - Shutdown completed.
