@@ -117,13 +117,14 @@ public class AllotInfoServiceImpl implements AllotInfoService {
         BootstrapMessage<AllotInfo> message = new BootstrapMessage<>();
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "userName"));
-        orders.add(new Sort.Order(Sort.Direction.DESC, "date"));
+        orders.add(new Sort.Order(Sort.Direction.ASC, "date"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(orders));
         Page<AllotInfo> cardInfoPage = allotInfoRepository.findAll(new Specification<AllotInfo>() {
             @Override
             public Predicate toPredicate(Root<AllotInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Path<String> userName = root.get("userName");
                 Path<String> demandName = root.get("demandName");
+                Path<String> demandCode = root.get("demandCode");
                 Path<Date> date = root.get("date");
 
                 List<Predicate> wherePredicate = new ArrayList<>();
@@ -131,11 +132,17 @@ public class AllotInfoServiceImpl implements AllotInfoService {
                     if (StringUtils.isNoneBlank(allotInfo.getUserName())) {
                         wherePredicate.add(cb.like(userName, "%" + allotInfo.getUserName() + "%"));
                     }
-                    if (allotInfo.getDemandName() != null) {
+                    if (StringUtils.isNoneBlank(allotInfo.getDemandName())) {
                         wherePredicate.add(cb.like(demandName, "%" + allotInfo.getDemandName() + "%"));
                     }
+                    if (StringUtils.isNoneBlank(allotInfo.getDemandCode())) {
+                        wherePredicate.add(cb.like(demandCode, "%" + allotInfo.getDemandCode() + "%"));
+                    }
                     if (allotInfo.getDate() != null) {
-                        wherePredicate.add(cb.equal(date, allotInfo.getDate()));
+                        wherePredicate.add(cb.greaterThanOrEqualTo(date.as(Date.class), allotInfo.getDate()));
+                    }
+                    if (allotInfo.getEndDate() != null) {
+                        wherePredicate.add(cb.lessThanOrEqualTo(date.as(Date.class), allotInfo.getEndDate()));
                     }
                 }
                 Predicate[] predicates = new Predicate[]{};

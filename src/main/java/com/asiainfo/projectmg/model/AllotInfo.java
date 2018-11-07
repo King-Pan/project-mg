@@ -38,6 +38,7 @@ public class AllotInfo {
 
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Transient
     private Date endDate;
     /**
      * 需求id

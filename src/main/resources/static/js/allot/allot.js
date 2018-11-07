@@ -1,6 +1,15 @@
 $(function () {
     initTable();
-    $("#search_date").datetimepicker({
+    $("#search_start_date").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: 2,
+        language: 'zh-CN',
+        autoclose: true,
+        todayBtn: 1,
+        todayHighlight: 1,
+        clearBtn: true
+    });
+    $("#search_end_date").datetimepicker({
         format: "yyyy-mm-dd",
         minView: 2,
         language: 'zh-CN',
@@ -125,10 +134,11 @@ function doQuery() {
 
 function queryParams(params) {
     var param = {
-        name: $("#search_name").val() || '',
         userName: $("#search_userName").val() || '',
         date: $("#search_start_date").val() || '',
         endDate: $("#search_end_date").val() || '',
+        demandCode: $("#search_code").val()||'',
+        demandName: $("#search_name").val() || '',
         size: params.limit,
         page: params.offset / params.limit
     };
