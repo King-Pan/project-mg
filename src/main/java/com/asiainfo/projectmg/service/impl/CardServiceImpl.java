@@ -87,6 +87,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public CardInfo findById(Long id) {
+        return cardRepository.getOne(id);
+    }
+
+    @Override
     public List<CardInfo> getListByCardIds(List<Long> cardIds) {
         return cardRepository.findByIdIn(cardIds);
     }

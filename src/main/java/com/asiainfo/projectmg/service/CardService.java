@@ -52,6 +52,9 @@ public interface CardService {
     void delete(Long id);
 
 
+    CardInfo findById(Long id);
+
+
     /**
      * 分页获取需求列表
      *

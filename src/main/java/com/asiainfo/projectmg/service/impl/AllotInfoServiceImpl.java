@@ -3,8 +3,12 @@ package com.asiainfo.projectmg.service.impl;
 import com.asiainfo.projectmg.common.BootstrapMessage;
 import com.asiainfo.projectmg.common.Message;
 import com.asiainfo.projectmg.model.AllotInfo;
+import com.asiainfo.projectmg.model.CardInfo;
+import com.asiainfo.projectmg.model.Demand;
 import com.asiainfo.projectmg.repository.AllotInfoRepository;
 import com.asiainfo.projectmg.service.AllotInfoService;
+import com.asiainfo.projectmg.service.CardService;
+import com.asiainfo.projectmg.service.DemandService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +43,14 @@ public class AllotInfoServiceImpl implements AllotInfoService {
     @Autowired
     private AllotInfoRepository allotInfoRepository;
 
+
+    @Autowired
+    private CardService cardService;
+
+
+    @Autowired
+    private DemandService demandService;
+
     @Override
     public void save(AllotInfo allotInfo) {
         allotInfoRepository.save(allotInfo);
@@ -68,6 +80,35 @@ public class AllotInfoServiceImpl implements AllotInfoService {
 
     @Override
     public void deleteBatch(List<Long> ids) {
+        AllotInfo info;
+        CardInfo cardInfo;
+        Demand demand;
+        List<CardInfo> cardInfoList = new ArrayList<>(10);
+        List<Demand> demandList = new ArrayList<>(10);
+        for (Long id:ids){
+            info = allotInfoRepository.getOne(id);
+            cardInfo =  cardService.findById(info.getCardId());
+            demand = demandService.findByDemandCode(info.getDemandCode());
+            BigDecimal supHour = new BigDecimal(cardInfo.getSurHours());
+            supHour = supHour.add(new BigDecimal(info.getHour()));
+            cardInfo.setSurHours(supHour.toString());
+
+            //以报工时
+            BigDecimal alHours = new BigDecimal(demand.getAlHours());
+            alHours = alHours.subtract(new BigDecimal(info.getHour()));
+
+            //未报工时
+            BigDecimal surHours = new BigDecimal(demand.getSurHours());
+            surHours = surHours.add(new BigDecimal(info.getHour()));
+
+            demand.setAlHours(alHours.toString());
+            demand.setSurHours(surHours.toString());
+
+            cardInfoList.add(cardInfo);
+            demandList.add(demand);
+        }
+        cardService.saveList(cardInfoList);
+        demandService.saveList(demandList);
         allotInfoRepository.deleteAllotInfoByIdIn(ids);
     }
 

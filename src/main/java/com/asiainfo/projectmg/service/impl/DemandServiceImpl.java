@@ -103,6 +103,11 @@ public class DemandServiceImpl implements DemandService {
     }
 
     @Override
+    public Demand findByDemandCode(String code) {
+        return demandRepository.getByCode(code);
+    }
+
+    @Override
     public void allotHours(AllotForm allotForm) {
         String type = allotForm.getType();
         List<CardInfo> cardInfoList = cardService.getListByCardIds(allotForm.getCardIds());

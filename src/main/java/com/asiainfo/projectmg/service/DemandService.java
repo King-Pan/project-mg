@@ -38,6 +38,13 @@ public interface DemandService {
      */
     void delete(Long id);
 
+    /**
+     * 通过需求编码获取需求信息
+     * @param code 需求编码
+     * @return
+     */
+    Demand findByDemandCode(String code);
+
 
     /**
      * 通过ID删除需求
