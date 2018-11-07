@@ -43,10 +43,8 @@ public class AllotInfoServiceImpl implements AllotInfoService {
     @Autowired
     private AllotInfoRepository allotInfoRepository;
 
-
     @Autowired
     private CardService cardService;
-
 
     @Autowired
     private DemandService demandService;
