@@ -9,7 +9,7 @@ public class ProjectMgApplication {
 	public static void main(String[] args) {
 		System.out.println("Jenkins" +
 				"自动构建测试----------------------------");
-		System.out.println("心妍宝贝，乖乖睡觉了------222");
+		System.out.println("心妍宝贝，乖乖睡觉了------444");
 		SpringApplication.run(ProjectMgApplication.class, args);
 	}
 }
